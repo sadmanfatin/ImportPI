@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.62.29" id="PiCreatePGPageDef"
+                Package="view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="ImpPiLines1" RangeSize="25" DataControl="MainAMDataControl"
+              id="ImpPiLines1Iterator"/>
+    <iterator Binds="ImpPiHeaders1" RangeSize="25"
+              DataControl="MainAMDataControl" id="ImpPiHeaders1Iterator"/>
+    <iterator Binds="FillBPO1" RangeSize="200" DataControl="MainAMDataControl"
+              id="FillBPO1Iterator"/>
+    <searchRegion Binds="FillBPO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="FillBPO1Query"/>
+    <iterator Binds="ImpPiDetails1" RangeSize="25"
+              DataControl="MainAMDataControl" id="ImpPiDetails1Iterator"/>
+    <searchRegion Binds="ImpPiDetails1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="ImpPiDetails1Query"/>
+    <iterator Binds="ImpPiItem1" RangeSize="100" DataControl="MainAMDataControl"
+              id="ImpPiItem1Iterator"/>
+    <searchRegion Binds="ImpPiItem1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="ImpPiItem1Query"/>
+    <iterator Binds="ImpPiAdjustments1" RangeSize="25"
+              DataControl="MainAMDataControl" id="ImpPiAdjustments1Iterator"/>
+    <iterator Binds="ItemQtyDetailVO1" RangeSize="25"
+              DataControl="MainAMDataControl" id="ItemQtyDetailVO1Iterator"/>
+    <searchRegion Binds="ItemQtyDetailVO1Iterator" Criteria=""
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  id="ItemQtyDetailVO1Query"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="FillBPO1Iterator" id="FillBPO1">
+      <nodeDefinition DefName="mnj.ont.model.popup.FillBPOVO"
+                      Name="FillBPO10">
+        <AttrNames>
+          <Item Value="PoNumber"/>
+          <Item Value="PoDate"/>
+          <Item Value="OrgId"/>
+          <Item Value="PoValue"/>
+          <Item Value="PaymentTerms"/>
+          <Item Value="ShipMode"/>
+          <Item Value="Buyer"/>
+          <Item Value="Season"/>
+          <Item Value="StyleName"/>
+          <Item Value="StyleNumber"/>
+          <Item Value="BpoNumber"/>
+          <Item Value="Supplier"/>
+          <Item Value="Item"/>
+          <Item Value="ItemDescription"/>
+          <Item Value="CheckBoxBPO"/>
+          <Item Value="Buyername"/>
+          <Item Value="StyleSeason"/>
+          <Item Value="CurrencyCode"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <methodAction id="callBpoFetch"
+                  InstanceName="MainAMDataControl.dataProvider"
+                  DataControl="MainAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="callBpoFetch"
+                  IsViewObjectMethod="false"/>
+    <methodAction id="createBPOLines"
+                  InstanceName="MainAMDataControl.dataProvider"
+                  DataControl="MainAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="createBPOLines"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.MainAMDataControl.methodResults.createBPOLines_MainAMDataControl_dataProvider_createBPOLines_result"/>
+    <methodAction id="getOrgId" InstanceName="MainAMDataControl.dataProvider"
+                  DataControl="MainAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="getOrgId"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.MainAMDataControl.methodResults.getOrgId_MainAMDataControl_dataProvider_getOrgId_result"/>
+    <methodAction id="getPopulateValue"
+                  InstanceName="MainAMDataControl.dataProvider"
+                  DataControl="MainAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="getPopulateValue"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.MainAMDataControl.methodResults.getPopulateValue_MainAMDataControl_dataProvider_getPopulateValue_result">
+      <NamedData NDName="r" NDType="oracle.jbo.Row"/>
+      <NamedData NDName="columnName" NDType="java.lang.String"/>
+    </methodAction>
+    <methodAction id="populateBPOLines"
+                  InstanceName="MainAMDataControl.dataProvider"
+                  DataControl="MainAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="populateBPOLines"
+                  IsViewObjectMethod="false">
+      <NamedData NDName="poprow" NDType="oracle.jbo.Row"/>
+    </methodAction>
+    <methodAction id="populateBpoLines1"
+                  InstanceName="MainAMDataControl.dataProvider"
+                  DataControl="MainAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="populateBpoLines1"
+                  IsViewObjectMethod="false">
+      <NamedData NDName="OrgId" NDType="java.lang.String"/>
+    </methodAction>
+    <tree IterBinding="ImpPiDetails1Iterator" id="ImpPiDetails1">
+      <nodeDefinition DefName="mnj.ont.model.views.ImpPiDetailsVO"
+                      Name="ImpPiDetails10">
+        <AttrNames>
+          <Item Value="PoNo"/>
+          <Item Value="PoDate"/>
+          <Item Value="PoValue"/>
+          <Item Value="Attribute1"/>
+          <Item Value="Attribute2"/>
+          <Item Value="Attribute3"/>
+          <Item Value="Attribute4"/>
+          <Item Value="Attribute5"/>
+          <Item Value="Attribute6"/>
+          <Item Value="Attribute7"/>
+          <Item Value="Attribute8"/>
+          <Item Value="Attribute9"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="ImpPiDetails1Iterator" id="CreateInsert1"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="ImpPiDetails1Iterator" id="Delete1"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <tree IterBinding="ImpPiItem1Iterator" id="ImpPiItem1">
+      <nodeDefinition DefName="mnj.ont.model.views.ImpPiItemVO"
+                      Name="ImpPiItem10">
+        <AttrNames>
+          <Item Value="ItemId"/>
+          <Item Value="HsCode"/>
+          <Item Value="Attribute1"/>
+          <Item Value="Attribute2"/>
+          <Item Value="Attribute3"/>
+          <Item Value="Attribute4"/>
+          <Item Value="PrimaryUomCode"/>
+          <Item Value="TotQty"/>
+          <Item Value="Buyer"/>
+          <Item Value="StyleNo"/>
+          <Item Value="Attribute6"/>
+          <Item Value="TransDate1_1_1_1_1"/>
+          <Item Value="Attribute9"/>
+          <Item Value="Attribute10"/>
+          <Item Value="Attribute11"/>
+          <Item Value="Attribute12"/>
+          <Item Value="PocId"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="ImpPiItem1Iterator" id="CreateInsert2"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="ImpPiItem1Iterator" id="Delete2"
+            RequiresUpdateModel="false" Action="removeCurrentRow"/>
+    <attributeValues IterBinding="ImpPiLines1Iterator" id="ImpPiLineId">
+      <AttrNames>
+        <Item Value="ImpPiLineId"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ImpPiLines1Iterator" id="PiNo">
+      <AttrNames>
+        <Item Value="PiNo"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ImpPiLines1Iterator" id="PiDate">
+      <AttrNames>
+        <Item Value="PiDate"/>
+      </AttrNames>
+    </attributeValues>
+    <listOfValues StaticList="false" IterBinding="ImpPiLines1Iterator"
+                  Uses="LOV_Currency" id="Currency"/>
+    <attributeValues IterBinding="ImpPiLines1Iterator" id="TotalValue">
+      <AttrNames>
+        <Item Value="TotalValue"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ImpPiLines1Iterator" id="SupplierId">
+      <AttrNames>
+        <Item Value="SupplierId"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ImpPiLines1Iterator" id="PiDocNumber">
+      <AttrNames>
+        <Item Value="PiDocNumber"/>
+      </AttrNames>
+    </attributeValues>
+    <listOfValues StaticList="false" IterBinding="ImpPiLines1Iterator"
+                  Uses="LOV_Supplier" id="Supplier"/>
+    <attributeValues IterBinding="ImpPiLines1Iterator" id="OrgId">
+      <AttrNames>
+        <Item Value="OrgId"/>
+      </AttrNames>
+    </attributeValues>
+    <listOfValues StaticList="false" IterBinding="ImpPiLines1Iterator"
+                  Uses="LOV_OrgName" id="OrgName"/>
+    <attributeValues IterBinding="ImpPiLines1Iterator" id="VersionNumber">
+      <AttrNames>
+        <Item Value="VersionNumber"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ImpPiLines1Iterator" id="VersionDate">
+      <AttrNames>
+        <Item Value="VersionDate"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="SetTotalValue"
+                  InstanceName="MainAMDataControl.dataProvider"
+                  DataControl="MainAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="SetTotalValue"
+                  IsViewObjectMethod="false">
+      <NamedData NDName="TotalVal" NDType="java.lang.String"/>
+    </methodAction>
+    <action id="Commit" DataControl="MainAMDataControl"
+            RequiresUpdateModel="true" Action="commitTransaction"/>
+    <attributeValues IterBinding="ImpPiAdjustments1Iterator"
+                     id="FreightCharges">
+      <AttrNames>
+        <Item Value="FreightCharges"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ImpPiAdjustments1Iterator" id="BankCharges">
+      <AttrNames>
+        <Item Value="BankCharges"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ImpPiAdjustments1Iterator"
+                     id="HandlingCharges">
+      <AttrNames>
+        <Item Value="HandlingCharges"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ImpPiAdjustments1Iterator" id="Discount">
+      <AttrNames>
+        <Item Value="Discount"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ImpPiAdjustments1Iterator" id="Other">
+      <AttrNames>
+        <Item Value="Other"/>
+      </AttrNames>
+    </attributeValues>
+    <action IterBinding="ImpPiAdjustments1Iterator" id="CreateInsert"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <attributeValues IterBinding="ImpPiAdjustments1Iterator"
+                     id="ImpPiAdjustmentId">
+      <AttrNames>
+        <Item Value="ImpPiAdjustmentId"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="pinovalidation"
+                  InstanceName="MainAMDataControl.dataProvider"
+                  DataControl="MainAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="pinovalidation"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.MainAMDataControl.methodResults.pinovalidation_MainAMDataControl_dataProvider_pinovalidation_result">
+      <NamedData NDName="bblcnumber" NDType="java.lang.String"/>
+    </methodAction>
+    <methodAction id="getRespKey" InstanceName="MainAMDataControl.dataProvider"
+                  DataControl="MainAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="getRespKey"
+                  IsViewObjectMethod="false"
+                  ReturnName="data.MainAMDataControl.methodResults.getRespKey_MainAMDataControl_dataProvider_getRespKey_result">
+      <NamedData NDName="respId" NDType="java.lang.String"/>
+    </methodAction>
+    <attributeValues IterBinding="ImpPiLines1Iterator" id="DeliveryDate">
+      <AttrNames>
+        <Item Value="DeliveryDate"/>
+      </AttrNames>
+    </attributeValues>
+    <attributeValues IterBinding="ImpPiLines1Iterator" id="ReceivedDate">
+      <AttrNames>
+        <Item Value="ReceivedDate"/>
+      </AttrNames>
+    </attributeValues>
+    <methodAction id="UpdateRecDate"
+                  InstanceName="MainAMDataControl.dataProvider"
+                  DataControl="MainAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="UpdateRecDate"
+                  IsViewObjectMethod="false">
+      <NamedData NDName="vRecDate" NDType="java.lang.String"/>
+      <NamedData NDName="vHeaderID" NDValue="" NDType="int"/>
+    </methodAction>
+    <tree IterBinding="ItemQtyDetailVO1Iterator" id="ItemQtyDetailVO1">
+      <nodeDefinition DefName="mnj.ont.model.views.ItemQtyDetailVO"
+                      Name="ItemQtyDetailVO10">
+        <AttrNames>
+          <Item Value="ImpPiLineId"/>
+          <Item Value="PiNo"/>
+          <Item Value="OrgId"/>
+          <Item Value="Prefix"/>
+          <Item Value="Quantity"/>
+          <Item Value="Uom"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+  </bindings>
+</pageDefinition>

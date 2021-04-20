@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE Association SYSTEM "jbo_03_01.dtd">
+<!---->
+<Association
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="IedocImpPiDetailsFkAssoc"
+  Version="11.1.1.62.29"
+  InheritPersonalization="true">
+  <DesignTime>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <AssociationEnd
+    Name="ImpPiLines"
+    Cardinality="1"
+    Source="true"
+    Owner="mnj.ont.model.entities.ImpPiLinesEO">
+    <DesignTime>
+      <Attr Name="_aggregation" Value="0"/>
+      <Attr Name="_finderName" Value="ImpPiLines"/>
+      <Attr Name="_foreignKey"
+        Value="mnj.ont.model.entities.ImpPiLinesEO.IedocImpPiLinesPk"/>
+      <Attr Name="_isUpdateable" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="mnj.ont.model.entities.ImpPiLinesEO.ImpPiLineId"/>
+    </AttrArray>
+  </AssociationEnd>
+  <AssociationEnd
+    Name="ImpPiAdjustments"
+    Cardinality="-1"
+    Owner="mnj.ont.model.entities.ImpPiAdjustmentsEO">
+    <DesignTime>
+      <Attr Name="_aggregation" Value="0"/>
+      <Attr Name="_finderName" Value="ImpPiAdjustments"/>
+      <Attr Name="_foreignKey"
+        Value="mnj.ont.model.entities.ImpPiAdjustmentsEO.IedocImpPiDetailsFk"/>
+      <Attr Name="_isUpdateable" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="mnj.ont.model.entities.ImpPiAdjustmentsEO.ImpPiLineId"/>
+    </AttrArray>
+  </AssociationEnd>
+</Association>

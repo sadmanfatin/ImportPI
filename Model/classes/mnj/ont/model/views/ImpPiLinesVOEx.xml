@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ImpPiLinesVOEx"
+  Version="11.1.1.62.29"
+  Extends="mnj.ont.model.views.ImpPiLinesVO"
+  InheritPersonalization="true"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  PageIterMode="Full"
+  UseGlueCode="false"
+  RowClass="mnj.ont.model.views.ImpPiLinesVOExRowImpl"
+  ComponentClass="mnj.ont.model.views.ImpPiLinesVOExImpl">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|VarAccess"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <SQLQuery>
+    <![CDATA[SELECT ImpPiLinesEO.IMP_PI_LINE_ID, 
+       ImpPiLinesEO.IMP_PI_HEADER_ID, 
+       ImpPiLinesEO.PI_NO, 
+ 
+       ImpPiLinesEO.PI_DATE, 
+       ImpPiLinesEO.CURRENCY, 
+       ImpPiLinesEO.TOTAL_VALUE, 
+       ImpPiLinesEO.ESTIMATED_SHIP_DATE, 
+       ImpPiLinesEO.PAYMENT_TERM, 
+       ImpPiLinesEO.SUPPLIER_ID, 
+       ImpPiLinesEO.DISCHARGE_PORT, 
+       ImpPiLinesEO.SHIP_PORT, 
+       ImpPiLinesEO.HS_CODE, 
+       ImpPiLinesEO.STANDARD_TRANSIT_TIME, 
+       ImpPiLinesEO.EX_MILL_DATE, 
+       ImpPiLinesEO.EX_COUNTRY_DATE, 
+       ImpPiLinesEO.LAST_UPDATE_LOGIN, 
+       ImpPiLinesEO.LAST_UPDATE_DATE, 
+       ImpPiLinesEO.LAST_UPDATED_BY, 
+       ImpPiLinesEO.CREATION_DATE, 
+       ImpPiLinesEO.CREATED_BY, 
+       ImpPiLinesEO.ATTRIBUTE1, 
+       ImpPiLinesEO.ATTRIBUTE2, 
+       ImpPiLinesEO.ATTRIBUTE3, 
+       ImpPiLinesEO.ATTRIBUTE4, 
+       ImpPiLinesEO.ATTRIBUTE5, 
+       ImpPiLinesEO.ATTRIBUTE6, 
+       ImpPiLinesEO.ATTRIBUTE7, 
+       ImpPiLinesEO.ATTRIBUTE8, 
+       ImpPiLinesEO.ATTRIBUTE9, 
+       ImpPiLinesEO.ATTRIBUTE10, 
+       ImpPiLinesEO.ATTRIBUTE11, 
+       ImpPiLinesEO.ATTRIBUTE12, 
+       ImpPiLinesEO.ATTRIBUTE13, 
+       ImpPiLinesEO.ATTRIBUTE14, 
+       ImpPiLinesEO.ATTRIBUTE15, 
+       ImpPiLinesEO.ATTRIBUTE16, 
+       ImpPiLinesEO.ATTRIBUTE17, 
+       ImpPiLinesEO.ATTRIBUTE18, 
+       ImpPiLinesEO.ATTRIBUTE19, 
+       ImpPiLinesEO.ATTRIBUTE20, 
+       ImpPiLinesEO.ATTRIBUTE21, 
+       ImpPiLinesEO.ATTRIBUTE22, 
+       ImpPiLinesEO.ATTRIBUTE23, 
+       ImpPiLinesEO.ATTRIBUTE24, 
+       ImpPiLinesEO.ATTRIBUTE25, 
+       ImpPiLinesEO.ATTRIBUTE26, 
+       ImpPiLinesEO.ATTRIBUTE27, 
+       ImpPiLinesEO.ATTRIBUTE28, 
+       ImpPiLinesEO.ATTRIBUTE29, 
+       ImpPiLinesEO.ATTRIBUTE30,
+       
+       ImpPiLinesEO.ORG_ID, 
+       ImpPiLinesEO.PI_DOC_NUMBER,
+       
+       ImpPiLinesEO.VERSION_DATE, 
+       ImpPiLinesEO.VERSION_NUMBER,
+
+        ImpPiLinesEO.Delivery_Date,
+        ImpPiLinesEO.Received_Date  ,
+
+( SELECT ibl.BBLC_NO  FROM IEDOC_IMP_BBLC_LINES ibl, IEDOC_IMP_BBLC_PI_DETAILS ibpd
+           WHERE ibl.IMP_BBLC_LINE_ID = ibpd.IMP_BBLC_LINE_ID 
+           AND ibpd.PI_NO =ImpPiLinesEO.PI_NO and rownum=1 )  BBLC_NO,
+           
+              ( select  distinct listagg ( iipd.po_no , ', ' ) within group  ( order by iipd.PO_no) from iedoc_imp_pi_details iipd where iipd.imp_pi_line_id = ImpPiLinesEO.IMP_PI_LINE_ID) SPO_NOS,    
+           
+
+    ( SELECT IIPD.ATTRIBUTE3 SPO_BUYER from IEDOC_IMP_PI_DETAILS IIPD
+           WHERE IIPD.IMP_PI_LINE_ID = ImpPiLinesEO.IMP_PI_LINE_ID
+           and rownum=1 )  SPO_BUYER,
+           
+          ( SELECT IIPD.ATTRIBUTE4 SPO_SEASON from  IEDOC_IMP_PI_DETAILS IIPD
+           WHERE IIPD.IMP_PI_LINE_ID = ImpPiLinesEO.IMP_PI_LINE_ID
+           and rownum=1 )  SPO_SEASON ,
+
+ (SELECT HOU.INTERNAL_ADDRESS_LINE 
+       FROM HR_ORGANIZATION_UNITS HOU 
+       WHERE HOU.ORGANIZATION_ID = ImpPiLinesEO.ORG_ID 
+       AND ROWNUM = 1 ) ORG_NAME,
+ (SELECT VENDOR_NAME FROM AP_SUPPLIERS WHERE VENDOR_ID = ImpPiLinesEO.SUPPLIER_ID) SUPPLIER,
+       (SELECT FU.USER_NAME FROM FND_USER FU WHERE FU.USER_ID = ImpPiLinesEO.CREATED_BY) CREATED_BY_NAME ,
+      
+       trunc  (ImpPiLinesEO.Received_Date    -  ImpPiLinesEO.VERSION_DATE)    Receiving_delay ,     
+         
+       ( 
+            SELECT BPD.CREATION_DATE FROM  IEDOC_IMP_BBLC_LINES BPL , IEDOC_IMP_BBLC_PI_DETAILS  BPD    
+            WHERE 1=1 
+            AND BPL.IMP_BBLC_LINE_ID= BPD.IMP_BBLC_LINE_ID
+            AND  BPD.PI_NO = ImpPiLinesEO.PI_NO 
+            AND BPD.IMP_BBLC_PI_DETAIL_ID  =( SELECT min (BPD2.IMP_BBLC_PI_DETAIL_ID) FROM  IEDOC_IMP_BBLC_PI_DETAILS BPD2 WHERE  BPD2.PI_NO = BPD.PI_NO and BPD2.CREATION_DATE is not null  )
+            
+       ) LC_ENTERING_DATE,
+       
+       
+     trunc ( ( 
+            SELECT BPD.CREATION_DATE FROM  IEDOC_IMP_BBLC_LINES BPL , IEDOC_IMP_BBLC_PI_DETAILS  BPD    
+            WHERE 1=1 
+            AND BPL.IMP_BBLC_LINE_ID= BPD.IMP_BBLC_LINE_ID
+            AND  BPD.PI_NO = ImpPiLinesEO.PI_NO 
+            AND BPD.IMP_BBLC_PI_DETAIL_ID  =( SELECT min (BPD2.IMP_BBLC_PI_DETAIL_ID) FROM  IEDOC_IMP_BBLC_PI_DETAILS BPD2 WHERE  BPD2.PI_NO = BPD.PI_NO   )
+            
+       ) -ImpPiLinesEO.VERSION_DATE )   LC_ENTERING_DEALY
+      
+FROM IEDOC_IMP_PI_LINES ImpPiLinesEO
+where 1=1
+ 
+AND   NOT EXISTS (SELECT  IBPD.PI_NO  from  IEDOC_IMP_BBLC_PI_DETAILS IBPD
+           WHERE 1=1 
+           AND IBPD.PI_NO =IMPPILINESEO.PI_NO AND ROWNUM=1) 
+           
+ AND       ImpPiLinesEO.VERSION_DATE  > to_date('29/02/2020', 'DD/MM/YYYY')   -- added on 5 Mar 2020    
+           
+ORDER BY ImpPiLinesEO.PI_DOC_NUMBER DESC]]>
+  </SQLQuery>
+  <ViewAttribute
+    Name="BblcNo"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="250"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="BBLC_NO"
+    Expression="BBLC_NO"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="250"/>
+      <Attr Name="_OverrideAttr" Value="true"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="SpoNos"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="4000"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="SPO_NOS"
+    Expression="SPO_NOS"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="4000"/>
+      <Attr Name="_OverrideAttr" Value="true"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="SpoBuyer"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="250"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="SPO_BUYER"
+    Expression="SPO_BUYER"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="250"/>
+      <Attr Name="_OverrideAttr" Value="true"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="SpoSeason"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="250"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="SPO_SEASON"
+    Expression="SPO_SEASON"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="250"/>
+      <Attr Name="_OverrideAttr" Value="true"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="OrgName"
+    LOVName="LOV_OrgName"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="250"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="ORG_NAME"
+    Expression="ORG_NAME"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+      <Attr Name="_OverrideAttr" Value="true"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH
+          Value="30"/>
+        <CONTROLTYPE
+          Value="input_text_lov"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Supplier"
+    LOVName="LOV_Supplier"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="240"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="SUPPLIER"
+    Expression="SUPPLIER"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="240"/>
+      <Attr Name="_OverrideAttr" Value="true"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="input_text_lov"/>
+        <DISPLAYWIDTH
+          Value="30"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="CreatedByName"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="100"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="CREATED_BY_NAME"
+    Expression="CREATED_BY_NAME"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+      <Attr Name="_OverrideAttr" Value="true"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ReceivingDelay"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="oracle.jbo.domain.Number"
+    ColumnType="NUMBER"
+    AliasName="RECEIVING_DELAY"
+    Expression="RECEIVING_DELAY"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="22"/>
+      <Attr Name="_OverrideAttr" Value="true"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LcEnteringDate"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="oracle.jbo.domain.Date"
+    ColumnType="DATE"
+    AliasName="LC_ENTERING_DATE"
+    Expression="LC_ENTERING_DATE"
+    SQLType="DATE">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="7"/>
+      <Attr Name="_OverrideAttr" Value="true"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LcEnteringDealy"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="oracle.jbo.domain.Number"
+    ColumnType="NUMBER"
+    AliasName="LC_ENTERING_DEALY"
+    Expression="LC_ENTERING_DEALY"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="22"/>
+      <Attr Name="_OverrideAttr" Value="true"/>
+    </DesignTime>
+  </ViewAttribute>
+</ViewObject>

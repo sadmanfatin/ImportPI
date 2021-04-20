@@ -1,0 +1,872 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ImpPiLinesVO"
+  Version="11.1.1.62.29"
+  InheritPersonalization="true"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  RowClass="mnj.ont.model.views.ImpPiLinesVORowImpl"
+  ComponentClass="mnj.ont.model.views.ImpPiLinesVOImpl"
+  PageIterMode="Full"
+  UseGlueCode="false">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|VarAccess"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <Variable
+    Name="PiNumber"
+    Kind="viewcriteria"
+    Type="java.lang.String"/>
+  <Variable
+    Name="PiDateSearch"
+    Kind="viewcriteria"
+    Type="oracle.jbo.domain.Date"/>
+  <ViewAccessor
+    Name="SuppVO1"
+    ViewObjectName="mnj.ont.model.lov.views.uiview.SuppVO"
+    RowLevelBinds="true"/>
+  <ViewAccessor
+    Name="CustomerVO1"
+    ViewObjectName="mnj.ont.model.lov.views.CustomerVO"
+    RowLevelBinds="true"/>
+  <ViewAccessor
+    Name="SupplierVO1"
+    ViewObjectName="mnj.ont.model.lov.views.SupplierVO"
+    RowLevelBinds="true"/>
+  <ViewAccessor
+    Name="CurrencyVO1"
+    ViewObjectName="mnj.ont.model.lov.views.CurrencyVO"
+    RowLevelBinds="true"/>
+  <ViewAccessor
+    Name="OrgVO1"
+    ViewObjectName="mnj.ont.model.lov.views.OrgVO"
+    RowLevelBinds="true"/>
+  <ListBinding
+    Name="LOV_Attribute2"
+    ListVOName="SupplierVO1"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_Attribute2_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="Attribute2"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="VendorName"/>
+    </AttrArray>
+    <DisplayCriteria
+      Hint="showAndExecute"/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_Currency"
+    ListVOName="CurrencyVO1"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_Currency_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="Currency"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="CurrencyCode"/>
+    </AttrArray>
+    <DisplayCriteria
+      Hint="showAndExecute"/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_OrgName"
+    ListVOName="OrgVO1"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_OrgName_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="OrgName"/>
+    </AttrArray>
+    <AttrArray Name="DerivedAttrNames">
+      <Item Value="OrgId"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="InternalAddressLine"/>
+      <Item Value="OrganizationId"/>
+    </AttrArray>
+    <DisplayCriteria
+      Hint="showAndExecute"/>
+  </ListBinding>
+  <ListBinding
+    Name="LOV_Supplier"
+    ListVOName="SuppVO1"
+    ListRangeSize="10"
+    NullValueFlag="none"
+    NullValueId="LOV_Supplier_LOVUIHints_NullValueId"
+    MRUCount="0">
+    <AttrArray Name="AttrNames">
+      <Item Value="Supplier"/>
+    </AttrArray>
+    <AttrArray Name="DerivedAttrNames">
+      <Item Value="SupplierId"/>
+    </AttrArray>
+    <AttrArray Name="ListAttrNames">
+      <Item Value="VendorName"/>
+      <Item Value="VendorId"/>
+    </AttrArray>
+    <DisplayCriteria
+      Hint="showAndExecute"/>
+  </ListBinding>
+  <SQLQuery>
+    <![CDATA[SELECT ImpPiLinesEO.IMP_PI_LINE_ID, 
+       ImpPiLinesEO.IMP_PI_HEADER_ID, 
+       ImpPiLinesEO.PI_NO, 
+ 
+       ImpPiLinesEO.PI_DATE, 
+       ImpPiLinesEO.CURRENCY, 
+       ImpPiLinesEO.TOTAL_VALUE, 
+       ImpPiLinesEO.ESTIMATED_SHIP_DATE, 
+       ImpPiLinesEO.PAYMENT_TERM, 
+       ImpPiLinesEO.SUPPLIER_ID, 
+       ImpPiLinesEO.DISCHARGE_PORT, 
+       ImpPiLinesEO.SHIP_PORT, 
+       ImpPiLinesEO.HS_CODE, 
+       ImpPiLinesEO.STANDARD_TRANSIT_TIME, 
+       ImpPiLinesEO.EX_MILL_DATE, 
+       ImpPiLinesEO.EX_COUNTRY_DATE, 
+       ImpPiLinesEO.LAST_UPDATE_LOGIN, 
+       ImpPiLinesEO.LAST_UPDATE_DATE, 
+       ImpPiLinesEO.LAST_UPDATED_BY, 
+       ImpPiLinesEO.CREATION_DATE, 
+       ImpPiLinesEO.CREATED_BY, 
+       ImpPiLinesEO.ATTRIBUTE1, 
+       ImpPiLinesEO.ATTRIBUTE2, 
+       ImpPiLinesEO.ATTRIBUTE3, 
+       ImpPiLinesEO.ATTRIBUTE4, 
+       ImpPiLinesEO.ATTRIBUTE5, 
+       ImpPiLinesEO.ATTRIBUTE6, 
+       ImpPiLinesEO.ATTRIBUTE7, 
+       ImpPiLinesEO.ATTRIBUTE8, 
+       ImpPiLinesEO.ATTRIBUTE9, 
+       ImpPiLinesEO.ATTRIBUTE10, 
+       ImpPiLinesEO.ATTRIBUTE11, 
+       ImpPiLinesEO.ATTRIBUTE12, 
+       ImpPiLinesEO.ATTRIBUTE13, 
+       ImpPiLinesEO.ATTRIBUTE14, 
+       ImpPiLinesEO.ATTRIBUTE15, 
+       ImpPiLinesEO.ATTRIBUTE16, 
+       ImpPiLinesEO.ATTRIBUTE17, 
+       ImpPiLinesEO.ATTRIBUTE18, 
+       ImpPiLinesEO.ATTRIBUTE19, 
+       ImpPiLinesEO.ATTRIBUTE20, 
+       ImpPiLinesEO.ATTRIBUTE21, 
+       ImpPiLinesEO.ATTRIBUTE22, 
+       ImpPiLinesEO.ATTRIBUTE23, 
+       ImpPiLinesEO.ATTRIBUTE24, 
+       ImpPiLinesEO.ATTRIBUTE25, 
+       ImpPiLinesEO.ATTRIBUTE26, 
+       ImpPiLinesEO.ATTRIBUTE27, 
+       ImpPiLinesEO.ATTRIBUTE28, 
+       ImpPiLinesEO.ATTRIBUTE29, 
+       ImpPiLinesEO.ATTRIBUTE30,
+       
+       ImpPiLinesEO.ORG_ID, 
+       ImpPiLinesEO.PI_DOC_NUMBER,
+       
+       ImpPiLinesEO.VERSION_DATE, 
+       ImpPiLinesEO.VERSION_NUMBER,
+
+        ImpPiLinesEO.Delivery_Date,
+        ImpPiLinesEO.Received_Date  ,
+
+( SELECT ibl.BBLC_NO  FROM IEDOC_IMP_BBLC_LINES ibl, IEDOC_IMP_BBLC_PI_DETAILS ibpd
+           WHERE ibl.IMP_BBLC_LINE_ID = ibpd.IMP_BBLC_LINE_ID 
+           AND ibpd.PI_NO =ImpPiLinesEO.PI_NO and rownum=1 )  BBLC_NO,
+           
+              ( select  distinct listagg ( iipd.po_no , ', ' ) within group  ( order by iipd.PO_no) from iedoc_imp_pi_details iipd where iipd.imp_pi_line_id = ImpPiLinesEO.IMP_PI_LINE_ID) SPO_NOS,    
+           
+
+    ( SELECT IIPD.ATTRIBUTE3 SPO_BUYER from IEDOC_IMP_PI_DETAILS IIPD
+           WHERE IIPD.IMP_PI_LINE_ID = ImpPiLinesEO.IMP_PI_LINE_ID
+           and rownum=1 )  SPO_BUYER,
+           
+          ( SELECT IIPD.ATTRIBUTE4 SPO_SEASON from  IEDOC_IMP_PI_DETAILS IIPD
+           WHERE IIPD.IMP_PI_LINE_ID = ImpPiLinesEO.IMP_PI_LINE_ID
+           and rownum=1 )  SPO_SEASON ,
+
+ (SELECT HOU.INTERNAL_ADDRESS_LINE 
+       FROM HR_ORGANIZATION_UNITS HOU 
+       WHERE HOU.ORGANIZATION_ID = ImpPiLinesEO.ORG_ID 
+       AND ROWNUM = 1 ) ORG_NAME,
+ (SELECT VENDOR_NAME FROM AP_SUPPLIERS WHERE VENDOR_ID = ImpPiLinesEO.SUPPLIER_ID) SUPPLIER,
+       (SELECT FU.USER_NAME FROM FND_USER FU WHERE FU.USER_ID = ImpPiLinesEO.CREATED_BY) CREATED_BY_NAME ,
+      
+       trunc  (ImpPiLinesEO.Received_Date    -  ImpPiLinesEO.VERSION_DATE)    Receiving_delay ,     
+         
+       ( 
+            SELECT BPD.CREATION_DATE FROM  IEDOC_IMP_BBLC_LINES BPL , IEDOC_IMP_BBLC_PI_DETAILS  BPD    
+            WHERE 1=1 
+            AND BPL.IMP_BBLC_LINE_ID= BPD.IMP_BBLC_LINE_ID
+            AND  BPD.PI_NO = ImpPiLinesEO.PI_NO 
+            AND BPD.IMP_BBLC_PI_DETAIL_ID  =( SELECT min (BPD2.IMP_BBLC_PI_DETAIL_ID) FROM  IEDOC_IMP_BBLC_PI_DETAILS BPD2 WHERE  BPD2.PI_NO = BPD.PI_NO and BPD2.CREATION_DATE is not null  )
+            
+       ) LC_ENTERING_DATE,
+       
+       
+     trunc ( ( 
+            SELECT BPD.CREATION_DATE FROM  IEDOC_IMP_BBLC_LINES BPL , IEDOC_IMP_BBLC_PI_DETAILS  BPD    
+            WHERE 1=1 
+            AND BPL.IMP_BBLC_LINE_ID= BPD.IMP_BBLC_LINE_ID
+            AND  BPD.PI_NO = ImpPiLinesEO.PI_NO 
+            AND BPD.IMP_BBLC_PI_DETAIL_ID  =( SELECT min (BPD2.IMP_BBLC_PI_DETAIL_ID) FROM  IEDOC_IMP_BBLC_PI_DETAILS BPD2 WHERE  BPD2.PI_NO = BPD.PI_NO   )
+            
+       ) -ImpPiLinesEO.VERSION_DATE )   LC_ENTERING_DEALY
+      
+ 
+
+FROM IEDOC_IMP_PI_LINES ImpPiLinesEO
+ORDER BY ImpPiLinesEO.PI_DOC_NUMBER DESC]]>
+  </SQLQuery>
+  <EntityUsage
+    Name="ImpPiLinesEO"
+    Entity="mnj.ont.model.entities.ImpPiLinesEO"/>
+  <ViewAttribute
+    Name="ImpPiLineId"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="ImpPiLineId"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="IMP_PI_LINE_ID"/>
+  <ViewAttribute
+    Name="ImpPiHeaderId"
+    IsNotNull="true"
+    PrecisionRule="true"
+    EntityAttrName="ImpPiHeaderId"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="IMP_PI_HEADER_ID">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH
+          Value="30"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="PiNo"
+    PrecisionRule="true"
+    EntityAttrName="PiNo"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="PI_NO">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="mnj.ont.model.views.ImpPiLinesVO.PiNo_LABEL"/>
+        <DISPLAYWIDTH
+          Value="30"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="PiDate"
+    PrecisionRule="true"
+    EntityAttrName="PiDate"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="PI_DATE">
+    <Properties>
+      <SchemaBasedProperties>
+        <LABEL
+          ResId="mnj.ont.model.views.ImpPiLinesVO.PiDate_LABEL"/>
+        <DISPLAYWIDTH
+          Value="30"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Currency"
+    LOVName="LOV_Currency"
+    PrecisionRule="true"
+    EntityAttrName="Currency"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="CURRENCY">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="input_text_lov"/>
+        <DISPLAYWIDTH
+          Value="30"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="TotalValue"
+    PrecisionRule="true"
+    EntityAttrName="TotalValue"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="TOTAL_VALUE">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH
+          Value="30"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="EstimatedShipDate"
+    PrecisionRule="true"
+    EntityAttrName="EstimatedShipDate"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="ESTIMATED_SHIP_DATE"/>
+  <ViewAttribute
+    Name="PaymentTerm"
+    PrecisionRule="true"
+    EntityAttrName="PaymentTerm"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="PAYMENT_TERM"/>
+  <ViewAttribute
+    Name="SupplierId"
+    PrecisionRule="true"
+    EntityAttrName="SupplierId"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="SUPPLIER_ID">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH
+          Value="30"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="DischargePort"
+    PrecisionRule="true"
+    EntityAttrName="DischargePort"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="DISCHARGE_PORT"/>
+  <ViewAttribute
+    Name="ShipPort"
+    PrecisionRule="true"
+    EntityAttrName="ShipPort"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="SHIP_PORT"/>
+  <ViewAttribute
+    Name="HsCode"
+    PrecisionRule="true"
+    EntityAttrName="HsCode"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="HS_CODE"/>
+  <ViewAttribute
+    Name="StandardTransitTime"
+    PrecisionRule="true"
+    EntityAttrName="StandardTransitTime"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="STANDARD_TRANSIT_TIME"/>
+  <ViewAttribute
+    Name="ExMillDate"
+    PrecisionRule="true"
+    EntityAttrName="ExMillDate"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="EX_MILL_DATE"/>
+  <ViewAttribute
+    Name="ExCountryDate"
+    PrecisionRule="true"
+    EntityAttrName="ExCountryDate"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="EX_COUNTRY_DATE"/>
+  <ViewAttribute
+    Name="LastUpdateLogin"
+    PrecisionRule="true"
+    EntityAttrName="LastUpdateLogin"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="LAST_UPDATE_LOGIN"/>
+  <ViewAttribute
+    Name="LastUpdateDate"
+    PrecisionRule="true"
+    EntityAttrName="LastUpdateDate"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="LAST_UPDATE_DATE"/>
+  <ViewAttribute
+    Name="LastUpdatedBy"
+    PrecisionRule="true"
+    EntityAttrName="LastUpdatedBy"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="LAST_UPDATED_BY"/>
+  <ViewAttribute
+    Name="CreationDate"
+    PrecisionRule="true"
+    EntityAttrName="CreationDate"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="CREATION_DATE"/>
+  <ViewAttribute
+    Name="CreatedBy"
+    PrecisionRule="true"
+    EntityAttrName="CreatedBy"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="CREATED_BY"/>
+  <ViewAttribute
+    Name="Attribute1"
+    PrecisionRule="true"
+    EntityAttrName="Attribute1"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="ATTRIBUTE1"/>
+  <ViewAttribute
+    Name="Attribute2"
+    LOVName="LOV_Attribute2"
+    PrecisionRule="true"
+    EntityAttrName="Attribute2"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="ATTRIBUTE2">
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="input_text_lov"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Attribute3"
+    PrecisionRule="true"
+    EntityAttrName="Attribute3"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="ATTRIBUTE3"/>
+  <ViewAttribute
+    Name="Attribute4"
+    PrecisionRule="true"
+    EntityAttrName="Attribute4"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="ATTRIBUTE4"/>
+  <ViewAttribute
+    Name="Attribute5"
+    PrecisionRule="true"
+    EntityAttrName="Attribute5"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="ATTRIBUTE5"/>
+  <ViewAttribute
+    Name="Attribute6"
+    PrecisionRule="true"
+    EntityAttrName="Attribute6"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="ATTRIBUTE6"/>
+  <ViewAttribute
+    Name="Attribute7"
+    PrecisionRule="true"
+    EntityAttrName="Attribute7"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="ATTRIBUTE7"/>
+  <ViewAttribute
+    Name="Attribute8"
+    PrecisionRule="true"
+    EntityAttrName="Attribute8"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="ATTRIBUTE8"/>
+  <ViewAttribute
+    Name="Attribute9"
+    PrecisionRule="true"
+    EntityAttrName="Attribute9"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="ATTRIBUTE9"/>
+  <ViewAttribute
+    Name="Attribute10"
+    PrecisionRule="true"
+    EntityAttrName="Attribute10"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="ATTRIBUTE10"/>
+  <ViewAttribute
+    Name="Attribute11"
+    PrecisionRule="true"
+    EntityAttrName="Attribute11"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="ATTRIBUTE11"/>
+  <ViewAttribute
+    Name="Attribute12"
+    PrecisionRule="true"
+    EntityAttrName="Attribute12"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="ATTRIBUTE12"/>
+  <ViewAttribute
+    Name="Attribute13"
+    PrecisionRule="true"
+    EntityAttrName="Attribute13"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="ATTRIBUTE13"/>
+  <ViewAttribute
+    Name="Attribute14"
+    PrecisionRule="true"
+    EntityAttrName="Attribute14"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="ATTRIBUTE14"/>
+  <ViewAttribute
+    Name="Attribute15"
+    PrecisionRule="true"
+    EntityAttrName="Attribute15"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="ATTRIBUTE15"/>
+  <ViewAttribute
+    Name="Attribute16"
+    PrecisionRule="true"
+    EntityAttrName="Attribute16"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="ATTRIBUTE16"/>
+  <ViewAttribute
+    Name="Attribute17"
+    PrecisionRule="true"
+    EntityAttrName="Attribute17"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="ATTRIBUTE17"/>
+  <ViewAttribute
+    Name="Attribute18"
+    PrecisionRule="true"
+    EntityAttrName="Attribute18"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="ATTRIBUTE18"/>
+  <ViewAttribute
+    Name="Attribute19"
+    PrecisionRule="true"
+    EntityAttrName="Attribute19"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="ATTRIBUTE19"/>
+  <ViewAttribute
+    Name="Attribute20"
+    PrecisionRule="true"
+    EntityAttrName="Attribute20"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="ATTRIBUTE20"/>
+  <ViewAttribute
+    Name="Attribute21"
+    PrecisionRule="true"
+    EntityAttrName="Attribute21"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="ATTRIBUTE21"/>
+  <ViewAttribute
+    Name="Attribute22"
+    PrecisionRule="true"
+    EntityAttrName="Attribute22"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="ATTRIBUTE22"/>
+  <ViewAttribute
+    Name="Attribute23"
+    PrecisionRule="true"
+    EntityAttrName="Attribute23"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="ATTRIBUTE23"/>
+  <ViewAttribute
+    Name="Attribute24"
+    PrecisionRule="true"
+    EntityAttrName="Attribute24"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="ATTRIBUTE24"/>
+  <ViewAttribute
+    Name="Attribute25"
+    PrecisionRule="true"
+    EntityAttrName="Attribute25"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="ATTRIBUTE25"/>
+  <ViewAttribute
+    Name="Attribute26"
+    PrecisionRule="true"
+    EntityAttrName="Attribute26"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="ATTRIBUTE26"/>
+  <ViewAttribute
+    Name="Attribute27"
+    PrecisionRule="true"
+    EntityAttrName="Attribute27"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="ATTRIBUTE27"/>
+  <ViewAttribute
+    Name="Attribute28"
+    PrecisionRule="true"
+    EntityAttrName="Attribute28"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="ATTRIBUTE28"/>
+  <ViewAttribute
+    Name="Attribute29"
+    PrecisionRule="true"
+    EntityAttrName="Attribute29"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="ATTRIBUTE29"/>
+  <ViewAttribute
+    Name="Attribute30"
+    PrecisionRule="true"
+    EntityAttrName="Attribute30"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="ATTRIBUTE30"/>
+  <ViewAttribute
+    Name="OrgId"
+    PrecisionRule="true"
+    EntityAttrName="OrgId"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="ORG_ID">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH
+          Value="30"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="PiDocNumber"
+    PrecisionRule="true"
+    EntityAttrName="PiDocNumber"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="PI_DOC_NUMBER">
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH
+          Value="30"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="VersionDate"
+    PrecisionRule="true"
+    EntityAttrName="VersionDate"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="VERSION_DATE"/>
+  <ViewAttribute
+    Name="VersionNumber"
+    PrecisionRule="true"
+    EntityAttrName="VersionNumber"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="VERSION_NUMBER"/>
+  <ViewAttribute
+    Name="DeliveryDate"
+    PrecisionRule="true"
+    EntityAttrName="DeliveryDate"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="DELIVERY_DATE"/>
+  <ViewAttribute
+    Name="ReceivedDate"
+    PrecisionRule="true"
+    EntityAttrName="ReceivedDate"
+    EntityUsage="ImpPiLinesEO"
+    AliasName="RECEIVED_DATE"/>
+  <ViewAttribute
+    Name="BblcNo"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="250"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="BBLC_NO"
+    Expression="BBLC_NO"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="250"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="SpoNos"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="4000"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="SPO_NOS"
+    Expression="SPO_NOS"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="4000"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="SpoBuyer"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="250"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="SPO_BUYER"
+    Expression="SPO_BUYER"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="250"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="SpoSeason"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="250"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="SPO_SEASON"
+    Expression="SPO_SEASON"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="250"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="OrgName"
+    LOVName="LOV_OrgName"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="250"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="ORG_NAME"
+    Expression="ORG_NAME"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <DISPLAYWIDTH
+          Value="30"/>
+        <CONTROLTYPE
+          Value="input_text_lov"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Supplier"
+    LOVName="LOV_Supplier"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="240"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="SUPPLIER"
+    Expression="SUPPLIER"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="240"/>
+    </DesignTime>
+    <Properties>
+      <SchemaBasedProperties>
+        <CONTROLTYPE
+          Value="input_text_lov"/>
+        <DISPLAYWIDTH
+          Value="30"/>
+      </SchemaBasedProperties>
+    </Properties>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="CreatedByName"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="100"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="CREATED_BY_NAME"
+    Expression="CREATED_BY_NAME"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ReceivingDelay"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="oracle.jbo.domain.Number"
+    ColumnType="NUMBER"
+    AliasName="RECEIVING_DELAY"
+    Expression="RECEIVING_DELAY"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="22"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LcEnteringDate"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="oracle.jbo.domain.Date"
+    ColumnType="DATE"
+    AliasName="LC_ENTERING_DATE"
+    Expression="LC_ENTERING_DATE"
+    SQLType="DATE">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="7"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="LcEnteringDealy"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="oracle.jbo.domain.Number"
+    ColumnType="NUMBER"
+    AliasName="LC_ENTERING_DEALY"
+    Expression="LC_ENTERING_DEALY"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="22"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewCriteria
+    Name="ImpPiLinesVOCriteria"
+    ViewObjectName="mnj.ont.model.views.ImpPiLinesVO"
+    Conjunction="AND">
+    <Properties>
+      <CustomProperties>
+        <Property
+          Name="displayOperators"
+          Value="InAdvancedMode"/>
+        <Property
+          Name="autoExecute"
+          Value="false"/>
+        <Property
+          Name="showInList"
+          Value="true"/>
+        <Property
+          Name="allowConjunctionOverride"
+          Value="true"/>
+        <Property
+          Name="mode"
+          Value="Basic"/>
+      </CustomProperties>
+    </Properties>
+    <ViewCriteriaRow
+      Name="vcrow1"
+      UpperColumns="1">
+      <ViewCriteriaItem
+        Name="PiNo"
+        ViewAttribute="PiNo"
+        Operator="="
+        Conjunction="AND"
+        Value=":PiNumber"
+        IsBindVarValue="true"
+        Required="Optional"/>
+      <ViewCriteriaItem
+        Name="PiDate"
+        ViewAttribute="PiDate"
+        Operator="="
+        Conjunction="AND"
+        Value=":PiDateSearch"
+        IsBindVarValue="true"
+        Required="Optional"/>
+    </ViewCriteriaRow>
+  </ViewCriteria>
+  <ViewLinkAccessor
+    Name="ImpPiDetails"
+    ViewLink="mnj.ont.model.viewlinks.IedocImpPiDetailsFklLink"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <ViewLinkAccessor
+    Name="ImpPiAdjustments"
+    ViewLink="mnj.ont.model.viewlinks.IedocImpPiDetailsFkLink"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <ViewLinkAccessor
+    Name="ItemQtyDetail"
+    ViewLink="mnj.ont.model.viewlinks.LineVO_Vs_ItemQtyDetailVO_VL"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <ViewLinkAccessor
+    Name="FillBPO"
+    ViewLink="mnj.ont.model.viewlinks.PiLIneVO_Vs_FillBPOVo_vl"
+    Type="oracle.jbo.RowIterator"
+    IsUpdateable="false"/>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

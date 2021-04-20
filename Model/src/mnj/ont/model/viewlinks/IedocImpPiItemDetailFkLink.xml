@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewLink SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewLink
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="IedocImpPiItemDetailFkLink"
+  Version="11.1.1.62.29"
+  InheritPersonalization="true"
+  EntityAssociation="mnj.ont.model.entities.IedocImpPiItemDetailFkAssoc">
+  <DesignTime>
+    <Attr Name="_isCodegen" Value="true"/>
+  </DesignTime>
+  <ViewLinkDefEnd
+    Name="ImpPiDetails"
+    Cardinality="1"
+    Owner="mnj.ont.model.views.ImpPiDetailsVO"
+    Source="true">
+    <DesignTime>
+      <Attr Name="_finderName" Value="ImpPiDetails"/>
+      <Attr Name="_isUpdateable" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="mnj.ont.model.views.ImpPiDetailsVO.ImpPiDetailId"/>
+    </AttrArray>
+  </ViewLinkDefEnd>
+  <ViewLinkDefEnd
+    Name="ImpPiItem"
+    Cardinality="-1"
+    Owner="mnj.ont.model.views.ImpPiItemVO">
+    <DesignTime>
+      <Attr Name="_finderName" Value="ImpPiItem"/>
+      <Attr Name="_isUpdateable" Value="true"/>
+    </DesignTime>
+    <AttrArray Name="Attributes">
+      <Item Value="mnj.ont.model.views.ImpPiItemVO.ImpPiDetailId"/>
+    </AttrArray>
+  </ViewLinkDefEnd>
+</ViewLink>

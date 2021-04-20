@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ItemsVO"
+  Version="11.1.1.62.29"
+  InheritPersonalization="true"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  ComponentClass="mnj.ont.model.views.ItemsVOImpl"
+  PageIterMode="Full"
+  UseGlueCode="false">
+  <DesignTime>
+    <Attr Name="_codeGenFlag2" Value="Access|Coll|Prog|VarAccess"/>
+    <Attr Name="_isExpertMode" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="mnj.ont.model.views.ItemsVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <SQLQuery>
+    <![CDATA[SELECT  PHA.SEGMENT1 PO_NUMBER,PHA.ORG_ID,PLA.ITEM_ID,
+       (SELECT CONCATENATED_SEGMENTS
+          FROM MTL_SYSTEM_ITEMS_KFV MSI
+         WHERE MSI.INVENTORY_ITEM_ID = PLA.ITEM_ID
+           AND MSI.ORGANIZATION_ID = 353) CONC_SEG,
+       (SELECT MSI.DESCRIPTION
+          FROM MTL_SYSTEM_ITEMS_KFV MSI
+         WHERE MSI.INVENTORY_ITEM_ID = PLA.ITEM_ID
+           AND MSI.ORGANIZATION_ID = 353) ITEM_DESC,
+       PLA.UNIT_PRICE,PLA.QUANTITY,PLLA.NEED_BY_DATE ,
+        (SELECT 
+           AC.customer_name buyer
+           FROM MNJ_MFG_PRECOSTING_H MnjMfgPrecostingH,ar_customers ac
+           WHERE MnjMfgPrecostingH.STYLE_NO =TRIM(SUBSTR(PLA.VENDOR_PRODUCT_NUM,1,INSTR(PLA.VENDOR_PRODUCT_NUM,'~')-1))
+            AND ac.CUSTOMER_ID = MnjMfgPrecostingH.Buyer_Id
+            AND ROWNUM=1) Buyer_Name,
+            /*PLA.VENDOR_PRODUCT_NUM*/ 
+PLLA.NOTE_TO_RECEIVER STYLE_SEASON,
+trim (SUBSTR(MRB.ATTRIBUTE14,INSTR(MRB.ATTRIBUTE14,'/',-1)+1))garment_qty ,
+    NVL( TRIM (SUBSTR(PLLA.NOTE_TO_RECEIVER, 0, INSTR(PLLA.NOTE_TO_RECEIVER,'~')-1)),PLLA.NOTE_TO_RECEIVER )  STYLE,
+    CASE 
+     WHEN PLLA.NOTE_TO_RECEIVER   like '%~%' THEN   TRIM(REGEXP_SUBSTR(PLLA.NOTE_TO_RECEIVER, '[^~]*$'))
+     ELSE  '' 
+    END  SEASON ,
+    
+    case when pla.attribute_category = 'Order wise Purchase Details' then pla.attribute1 end poc_id
+
+    
+  FROM PO_HEADERS_ALL PHA, PO_LINES_ALL PLA,PO_LINE_LOCATIONS_ALL PLLA,
+   PO_DISTRIBUTIONS_ALL PDA,
+         MNJ_REQUISITION_BOM_V MRB
+ WHERE PHA.PO_HEADER_ID = PLA.PO_HEADER_ID       
+  AND PLLA.PO_HEADER_ID(+)=PLA.PO_HEADER_ID
+  AND PLLA.PO_LINE_ID(+)=PLA.PO_LINE_ID
+     AND PDA.PO_HEADER_ID = PHA.PO_HEADER_ID
+     AND PDA.PO_LINE_ID   = PLA.PO_LINE_ID
+     AND PDA.REQ_DISTRIBUTION_ID = MRB.DISTRIBUTION_ID(+)
+and (PLLA.CANCEL_FLAG is null or PLLA.CANCEL_FLAG='N')]]>
+  </SQLQuery>
+  <ViewAttribute
+    Name="PoNumber"
+    IsUpdateable="false"
+    IsPersistent="false"
+    IsNotNull="true"
+    PrecisionRule="true"
+    Precision="255"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="PO_NUMBER"
+    Expression="PO_NUMBER"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="20"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="OrgId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="oracle.jbo.domain.Number"
+    ColumnType="NUMBER"
+    AliasName="ORG_ID"
+    Expression="ORG_ID"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ItemId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="oracle.jbo.domain.Number"
+    ColumnType="NUMBER"
+    AliasName="ITEM_ID"
+    Expression="ITEM_ID"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ConcSeg"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="245"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="CONC_SEG"
+    Expression="CONC_SEG"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="245"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="ItemDesc"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="240"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="ITEM_DESC"
+    Expression="ITEM_DESC"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="240"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="UnitPrice"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="oracle.jbo.domain.Number"
+    ColumnType="NUMBER"
+    AliasName="UNIT_PRICE"
+    Expression="UNIT_PRICE"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Quantity"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="oracle.jbo.domain.Number"
+    ColumnType="NUMBER"
+    AliasName="QUANTITY"
+    Expression="QUANTITY"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="NeedByDate"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="oracle.jbo.domain.Date"
+    ColumnType="DATE"
+    AliasName="NEED_BY_DATE"
+    Expression="NEED_BY_DATE"
+    SQLType="DATE">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="7"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="BuyerName"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="50"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="BUYER_NAME"
+    Expression="BUYER_NAME"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="50"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="StyleSeason"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="25"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="STYLE_SEASON"
+    Expression="STYLE_SEASON"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="25"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="GarmentQty"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="150"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="GARMENT_QTY"
+    Expression="GARMENT_QTY"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="150"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Style"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="480"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="STYLE"
+    Expression="STYLE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="480"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Season"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="480"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="SEASON"
+    Expression="SEASON"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="480"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="PocId"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="150"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="POC_ID"
+    Expression="POC_ID"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="150"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

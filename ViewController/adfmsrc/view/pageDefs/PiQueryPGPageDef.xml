@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<pageDefinition xmlns="http://xmlns.oracle.com/adfm/uimodel"
+                version="11.1.1.62.29" id="PiQueryPGPageDef"
+                Package="view.pageDefs">
+  <parameters/>
+  <executables>
+    <variableIterator id="variables"/>
+    <iterator Binds="ImpPiLines1" RangeSize="200" DataControl="MainAMDataControl"
+              id="ImpPiLines1Iterator"/>
+    <searchRegion Criteria="ImpPiLinesVOCriteria"
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="ImpPiLines1Iterator" id="ImpPiLinesVOCriteriaQuery"/>
+    <invokeAction id="setSessionVal" Binds="setSessionValues" Refresh="always"/>
+    <iterator Binds="ImpPiLinesVOEx1" RangeSize="25"
+              DataControl="MainAMDataControl" id="ImpPiLinesVOEx1Iterator"/>
+    <searchRegion Criteria="ImpPiLinesVOCriteria"
+                  Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
+                  Binds="ImpPiLinesVOEx1Iterator"
+                  id="ImpPiLinesVOCriteriaQuery1"/>
+  </executables>
+  <bindings>
+    <tree IterBinding="ImpPiLines1Iterator" id="ImpPiLines1">
+      <nodeDefinition DefName="mnj.ont.model.views.ImpPiLinesVO"
+                      Name="ImpPiLines10">
+        <AttrNames>
+          <Item Value="PiNo"/>
+          <Item Value="PiDate"/>
+          <Item Value="Currency"/>
+          <Item Value="TotalValue"/>
+          <Item Value="EstimatedShipDate"/>
+          <Item Value="PaymentTerm"/>
+          <Item Value="OrgName"/>
+          <Item Value="PiDocNumber"/>
+          <Item Value="VersionNumber"/>
+          <Item Value="VersionDate"/>
+          <Item Value="Supplier"/>
+          <Item Value="CreatedByName"/>
+          <Item Value="CreationDate"/>
+          <Item Value="BblcNo"/>
+          <Item Value="SpoBuyer"/>
+          <Item Value="SpoSeason"/>
+          <Item Value="SpoNos"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+    <action IterBinding="ImpPiLines1Iterator" id="CreateInsert"
+            RequiresUpdateModel="true" Action="createInsertRow"/>
+    <action IterBinding="ImpPiLines1Iterator" id="setCurrentRowWithKey"
+            RequiresUpdateModel="false" Action="setCurrentRowWithKey">
+      <NamedData NDName="rowKey" NDType="java.lang.String"/>
+    </action>
+    <methodAction id="setSessionValues"
+                  InstanceName="MainAMDataControl.dataProvider"
+                  DataControl="MainAMDataControl" RequiresUpdateModel="true"
+                  Action="invokeMethod" MethodName="setSessionValues"
+                  IsViewObjectMethod="false">
+      <NamedData NDName="orgId" NDValue="#{viewScope.OrgId}"
+                 NDType="java.lang.String"/>
+      <NamedData NDName="userId" NDValue="#{viewScope.UserId}"
+                 NDType="java.lang.String"/>
+      <NamedData NDName="respId" NDValue="#{viewScope.RespId}"
+                 NDType="java.lang.String"/>
+      <NamedData NDName="respAppl" NDValue="#{viewScope.RespApplId}"
+                 NDType="java.lang.String"/>
+    </methodAction>
+    <tree IterBinding="ImpPiLinesVOEx1Iterator" id="ImpPiLinesVOEx1">
+      <nodeDefinition DefName="mnj.ont.model.views.ImpPiLinesVOEx"
+                      Name="ImpPiLinesVOEx10">
+        <AttrNames>
+          <Item Value="PiDocNumber"/>
+          <Item Value="VersionNumber"/>
+          <Item Value="VersionDate"/>
+          <Item Value="OrgName"/>
+          <Item Value="PiNo"/>
+          <Item Value="TotalValue"/>
+          <Item Value="PiDate"/>
+          <Item Value="Currency"/>
+          <Item Value="CreatedByName"/>
+          <Item Value="CreationDate"/>
+          <Item Value="SpoNos"/>
+          <Item Value="SpoBuyer"/>
+          <Item Value="SpoSeason"/>
+          <Item Value="Supplier"/>
+          <Item Value="ReceivedDate"/>
+          <Item Value="ReceivingDelay"/>
+          <Item Value="LcEnteringDate"/>
+          <Item Value="LcEnteringDealy"/>
+        </AttrNames>
+      </nodeDefinition>
+    </tree>
+  </bindings>
+</pageDefinition>

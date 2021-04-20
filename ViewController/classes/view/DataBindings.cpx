@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Application xmlns="http://xmlns.oracle.com/adfm/application"
+             version="11.1.1.62.29" id="DataBindings" SeparateXMLFiles="false"
+             Package="view" ClientType="Generic">
+  <pageMap>
+    <page path="/PiQueryPG.jspx" usageId="view_PiQueryPGPageDef"/>
+    <page path="/PiCreatePG.jspx" usageId="view_PiCreatePGPageDef"/>
+  </pageMap>
+  <pageDefinitionUsages>
+    <page id="view_PiQueryPGPageDef" path="view.pageDefs.PiQueryPGPageDef"/>
+    <page id="view_PiCreatePGPageDef" path="view.pageDefs.PiCreatePGPageDef"/>
+  </pageDefinitionUsages>
+  <dataControlUsages>
+    <BC4JDataControl id="MainAMDataControl" Package="mnj.ont.model.services"
+                     FactoryClass="oracle.adf.model.bc4j.DataControlFactoryImpl"
+                     SupportsTransactions="true" SupportsFindMode="true"
+                     SupportsRangesize="true" SupportsResetState="true"
+                     SupportsSortCollection="true" Configuration="MainAMLocal"
+                     syncMode="Immediate"
+                     xmlns="http://xmlns.oracle.com/adfm/datacontrol"/>
+  </dataControlUsages>
+</Application>

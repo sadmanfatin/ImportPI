@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+<!DOCTYPE ViewObject SYSTEM "jbo_03_01.dtd">
+<!---->
+<ViewObject
+  xmlns="http://xmlns.oracle.com/bc4j"
+  Name="ItemQtyDetailVO"
+  Version="11.1.1.62.29"
+  InheritPersonalization="true"
+  BindingStyle="OracleName"
+  CustomQuery="true"
+  PageIterMode="Full"
+  UseGlueCode="false">
+  <DesignTime>
+    <Attr Name="_isExpertMode" Value="true"/>
+  </DesignTime>
+  <Properties>
+    <SchemaBasedProperties>
+      <LABEL
+        ResId="mnj.ont.model.views.ItemQtyDetailVO_LABEL"/>
+    </SchemaBasedProperties>
+  </Properties>
+  <SQLQuery>
+    <![CDATA[SELECT IMP_PI_LINE_ID, PI_NO,ORG_ID,  PREFIX,SUM(QTY) QUANTITY, UOM FROM (
+        SELECT H.IMP_PI_LINE_ID,
+               H.ORG_ID,
+              H.PI_NO,
+               TRIM (REGEXP_SUBSTR (D.ATTRIBUTE2, '[^-]+', 1)) PREFIX,
+               D.ITEM_ID,
+               D.ATTRIBUTE4 QTY,
+               (SELECT     M.PRIMARY_UNIT_OF_MEASURE
+                  FROM MTL_SYSTEM_ITEMS M
+                 WHERE D.ITEM_ID = M.INVENTORY_ITEM_ID
+                 AND  M.ORGANIZATION_ID = APPS.OPER_UNIT_TO_ORGANIZATION_ID( H.ORG_ID)
+                 ) UOM
+          FROM IEDOC_IMP_PI_LINES H,
+               IEDOC_IMP_PI_DETAILS L,
+               IEDOC_IMP_PI_ITEM_DETAIL D
+         WHERE     H.IMP_PI_LINE_ID = L.IMP_PI_LINE_ID
+               AND L.IMP_PI_DETAIL_ID = D.IMP_PI_DETAIL_ID 
+           --  AND PI_NO ='HST.INV.00051.20'
+
+               ) GROUP BY  IMP_PI_LINE_ID , PI_NO,ORG_ID,PREFIX,UOM
+               
+       ORDER BY PI_NO]]>
+  </SQLQuery>
+  <ViewAttribute
+    Name="ImpPiLineId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    IsNotNull="true"
+    PrecisionRule="true"
+    Type="oracle.jbo.domain.Number"
+    ColumnType="NUMBER"
+    AliasName="IMP_PI_LINE_ID"
+    Expression="IMP_PI_LINE_ID"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="PiNo"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="250"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="PI_NO"
+    Expression="PI_NO"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="250"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="OrgId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="oracle.jbo.domain.Number"
+    ColumnType="NUMBER"
+    AliasName="ORG_ID"
+    Expression="ORG_ID"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Prefix"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="750"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="PREFIX"
+    Expression="PREFIX"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="750"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Quantity"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="oracle.jbo.domain.Number"
+    ColumnType="NUMBER"
+    AliasName="QUANTITY"
+    Expression="QUANTITY"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Uom"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="25"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="UOM"
+    Expression="UOM"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="25"/>
+    </DesignTime>
+  </ViewAttribute>
+  <AttrArray Name="KeyAttributes">
+    <Item Value="ImpPiLineId"/>
+  </AttrArray>
+  <ResourceBundle>
+    <PropertiesBundle
+      PropertiesFile="model.ModelBundle"/>
+  </ResourceBundle>
+</ViewObject>

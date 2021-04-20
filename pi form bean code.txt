@@ -1,0 +1,98 @@
+    public void setCurrentPiRow(ActionEvent actionEvent) {
+        // Add event code here...
+        
+        ViewObject exVo = appM.getImpPiLinesVOEx1();
+       ImpPiLinesVORowImpl currentRow = (ImpPiLinesVORowImpl)exVo.getCurrentRow();
+       
+ //       System.out.println("====================== currentRow.getPiNo()  "+currentRow.getPiNo());  
+        
+        ViewObject lineVO =  appM.getImpPiLines1();
+   
+        lineVO.executeQuery();
+        setLineVoCurrentRow( currentRow);
+         
+    }
+    
+    
+    public void refreshQueryKeepingCurrentRow(ViewObject viewObject )  {
+        
+        
+         Row currentRow;
+         Key currentRowKey;
+         
+         // added on 7.jan.18 to handle exception if view object has no current row
+        try{
+           currentRow = viewObject.getCurrentRow();
+           currentRowKey = currentRow.getKey();
+        }
+        catch(Exception e){
+            return;
+        }
+        
+      
+       int rangePosOfCurrentRow = viewObject.getRangeIndexOf(currentRow);
+       int rangeStartBeforeQuery = viewObject.getRangeStart();
+       viewObject.executeQuery();
+       viewObject.setRangeStart(rangeStartBeforeQuery);
+       /*
+        * In 10.1.2, there is this convenience method we could use
+        * instead of the remaining lines of code
+        *
+        *  findAndSetCurrentRowByKey(currentRowKey,rangePosOfCurrentRow);
+        *  
+        */
+       
+       Row[] rows = viewObject.findByKey(currentRowKey, 1);
+        
+        
+        
+      
+       
+       if (rows != null && rows.length == 1)
+       {
+          viewObject.scrollRangeTo(rows[0], rangePosOfCurrentRow);
+          viewObject.setCurrentRowAtRangeIndex(viewObject.getRangeIndexOf(rows[0]));
+       }
+       
+               
+     }
+
+
+    private void setLineVoCurrentRow(Row currentRow) {
+        ViewObject lineVo  = appM.getImpPiLines1();
+            
+        Key currentRowKey ;
+        currentRowKey = currentRow.getKey();
+        
+        int rangePosOfCurrentRow = lineVo.getRangeIndexOf(currentRow);
+        
+        if (rangePosOfCurrentRow<0) {
+            rangePosOfCurrentRow=1;
+        }
+        
+//        System.out.println("-------------------------- rangePosOfCurrentRow  "+ rangePosOfCurrentRow);
+        
+        int rangeStartBeforeQuery = lineVo.getRangeStart();
+        
+//        System.out.println("-------------------------- rangeStartBeforeQuery  "+ rangeStartBeforeQuery);
+        
+        lineVo.executeQuery();
+        lineVo.setRangeStart(rangeStartBeforeQuery);
+        /*
+         * In 10.1.2, there is this convenience method we could use
+         * instead of the remaining lines of code
+         *
+         *  findAndSetCurrentRowByKey(currentRowKey,rangePosOfCurrentRow);
+         *  
+         */
+        
+        Row[] rows = lineVo.findByKey(currentRowKey, 1);
+        
+        if (rows != null && rows.length == 1)
+        {                                
+           lineVo.scrollRangeTo(rows[0], rangePosOfCurrentRow);
+           lineVo.setCurrentRowAtRangeIndex(lineVo.getRangeIndexOf(rows[0]));
+        }
+        
+        
+    }

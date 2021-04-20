@@ -1,0 +1,9 @@
+
+*.class
+*.jdb
+*.cdi_javac
+ViewController/classes/.data/00000000/0000003e.jdb
+*.jdb
+*.jpr
+*.ear
+*.war
