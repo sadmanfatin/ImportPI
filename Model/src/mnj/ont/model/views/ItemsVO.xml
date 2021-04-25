@@ -32,34 +32,31 @@
          WHERE MSI.INVENTORY_ITEM_ID = PLA.ITEM_ID
            AND MSI.ORGANIZATION_ID = 353) ITEM_DESC,
        PLA.UNIT_PRICE,PLA.QUANTITY,PLLA.NEED_BY_DATE ,
-        (SELECT 
-           AC.customer_name buyer
-           FROM MNJ_MFG_PRECOSTING_H MnjMfgPrecostingH,ar_customers ac
-           WHERE MnjMfgPrecostingH.STYLE_NO =TRIM(SUBSTR(PLA.VENDOR_PRODUCT_NUM,1,INSTR(PLA.VENDOR_PRODUCT_NUM,'~')-1))
-            AND ac.CUSTOMER_ID = MnjMfgPrecostingH.Buyer_Id
-            AND ROWNUM=1) Buyer_Name,
-            /*PLA.VENDOR_PRODUCT_NUM*/ 
-PLLA.NOTE_TO_RECEIVER STYLE_SEASON,
-trim (SUBSTR(MRB.ATTRIBUTE14,INSTR(MRB.ATTRIBUTE14,'/',-1)+1))garment_qty ,
-    NVL( TRIM (SUBSTR(PLLA.NOTE_TO_RECEIVER, 0, INSTR(PLLA.NOTE_TO_RECEIVER,'~')-1)),PLLA.NOTE_TO_RECEIVER )  STYLE,
-    CASE 
-     WHEN PLLA.NOTE_TO_RECEIVER   like '%~%' THEN   TRIM(REGEXP_SUBSTR(PLLA.NOTE_TO_RECEIVER, '[^~]*$'))
-     ELSE  '' 
-    END  SEASON ,
-    
-    case when pla.attribute_category = 'Order wise Purchase Details' then pla.attribute1 end poc_id
 
+        (  SELECT CUSTOMER_NAME FROM AR_CUSTOMERS AC WHERE AC.CUSTOMER_NAME_PHONETIC IN ('UM', 'EM') AND AC.STATUS = 'A'  AND  AC.CUSTOMER_ID = 
+         (SELECT H.BUYER_ID FROM XX_OM_POC_H_T H  WHERE H.POC_ID = APPS.PO_LINE_POC_ID_F(PLA.PO_LINE_ID))
+            
+        ) BUYER_NAME ,
+      
+      ( SELECT    H.SEASON FROM XX_OM_POC_H_T H  WHERE H.POC_ID =   APPS.PO_LINE_POC_ID_F(PLA.PO_LINE_ID)) SEASON,
+      
+       ( SELECT    H.STYLE FROM XX_OM_POC_H_T H  WHERE H.POC_ID =   APPS.PO_LINE_POC_ID_F(PLA.PO_LINE_ID)) STYLE,
+               
+        PLLA.NOTE_TO_RECEIVER STYLE_SEASON,
+          TRIM (SUBSTR(MRB.ATTRIBUTE14,INSTR(MRB.ATTRIBUTE14,'/',-1)+1))GARMENT_QTY ,
+      
+        APPS.PO_LINE_POC_ID_F(PLA.PO_LINE_ID) POC_ID 
     
-  FROM PO_HEADERS_ALL PHA, PO_LINES_ALL PLA,PO_LINE_LOCATIONS_ALL PLLA,
-   PO_DISTRIBUTIONS_ALL PDA,
-         MNJ_REQUISITION_BOM_V MRB
- WHERE PHA.PO_HEADER_ID = PLA.PO_HEADER_ID       
-  AND PLLA.PO_HEADER_ID(+)=PLA.PO_HEADER_ID
-  AND PLLA.PO_LINE_ID(+)=PLA.PO_LINE_ID
-     AND PDA.PO_HEADER_ID = PHA.PO_HEADER_ID
-     AND PDA.PO_LINE_ID   = PLA.PO_LINE_ID
-     AND PDA.REQ_DISTRIBUTION_ID = MRB.DISTRIBUTION_ID(+)
-and (PLLA.CANCEL_FLAG is null or PLLA.CANCEL_FLAG='N')]]>
+        FROM PO_HEADERS_ALL PHA, PO_LINES_ALL PLA,PO_LINE_LOCATIONS_ALL PLLA,
+           PO_DISTRIBUTIONS_ALL PDA,
+                 MNJ_REQUISITION_BOM_V MRB
+         WHERE PHA.PO_HEADER_ID = PLA.PO_HEADER_ID       
+          AND PLLA.PO_HEADER_ID(+)=PLA.PO_HEADER_ID
+          AND PLLA.PO_LINE_ID(+)=PLA.PO_LINE_ID
+             AND PDA.PO_HEADER_ID = PHA.PO_HEADER_ID
+             AND PDA.PO_LINE_ID   = PLA.PO_LINE_ID
+             AND PDA.REQ_DISTRIBUTION_ID = MRB.DISTRIBUTION_ID(+)
+        AND (PLLA.CANCEL_FLAG IS NULL OR PLLA.CANCEL_FLAG='N')]]>
   </SQLQuery>
   <ViewAttribute
     Name="PoNumber"
@@ -193,6 +190,35 @@ and (PLLA.CANCEL_FLAG is null or PLLA.CANCEL_FLAG='N')]]>
     </DesignTime>
   </ViewAttribute>
   <ViewAttribute
+    Name="Season"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="480"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="SEASON"
+    Expression="SEASON"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="480"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Style"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="100"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="STYLE"
+    Expression="STYLE"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="100"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
     Name="StyleSeason"
     IsUpdateable="false"
     IsPersistent="false"
@@ -220,36 +246,6 @@ and (PLLA.CANCEL_FLAG is null or PLLA.CANCEL_FLAG='N')]]>
     SQLType="VARCHAR">
     <DesignTime>
       <Attr Name="_DisplaySize" Value="150"/>
-    </DesignTime>
-  </ViewAttribute>
-  <ViewAttribute
-    Name="Style"
-    IsUpdateable="false"
-    IsPersistent="false"
-    PrecisionRule="true"
-    Precision="480"
-    Type="java.lang.String"
-    ColumnType="VARCHAR2"
-    AliasName="STYLE"
-    Expression="STYLE"
-    SQLType="VARCHAR">
-    <DesignTime>
-      <Attr Name="_DisplaySize" Value="480"/>
-    </DesignTime>
-  </ViewAttribute>
-  <ViewAttribute
-    Name="Season"
-    IsUpdateable="false"
-    IsPersistent="false"
-    PrecisionRule="true"
-    Precision="480"
-    Type="java.lang.String"
-    ColumnType="VARCHAR2"
-    AliasName="SEASON"
-    Expression="SEASON"
-    SQLType="VARCHAR">
-    <DesignTime>
-      <Attr Name="_DisplaySize" Value="480"/>
     </DesignTime>
   </ViewAttribute>
   <ViewAttribute
