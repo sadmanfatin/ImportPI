@@ -46,7 +46,8 @@
        ImpPiDetailsEO.ATTRIBUTE27, 
        ImpPiDetailsEO.ATTRIBUTE28, 
        ImpPiDetailsEO.ATTRIBUTE29, 
-       ImpPiDetailsEO.ATTRIBUTE30"
+       ImpPiDetailsEO.ATTRIBUTE30, 
+       ImpPiDetailsEO.BUYER_ID"
   FromList="IEDOC_IMP_PI_DETAILS ImpPiDetailsEO"
   BindingStyle="OracleName"
   CustomQuery="false"
@@ -419,6 +420,12 @@
     EntityAttrName="Attribute30"
     EntityUsage="ImpPiDetailsEO"
     AliasName="ATTRIBUTE30"/>
+  <ViewAttribute
+    Name="BuyerId"
+    PrecisionRule="true"
+    EntityAttrName="BuyerId"
+    EntityUsage="ImpPiDetailsEO"
+    AliasName="BUYER_ID"/>
   <ViewLinkAccessor
     Name="ImpPiItem"
     ViewLink="mnj.ont.model.viewlinks.IedocImpPiItemDetailFkLink"

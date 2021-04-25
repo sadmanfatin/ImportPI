@@ -80,7 +80,7 @@ public class MainAMImpl extends ApplicationModuleImpl implements MainAM {
     }  
     
     public void populateBPOLines(Row poprow) {
-
+         System.out.println(" in  populateBPOLines");
         ViewObject vo = getImpPiDetails1();
         
         // current pi line vo org id
@@ -102,41 +102,13 @@ public class MainAMImpl extends ApplicationModuleImpl implements MainAM {
                              getPopulateValue(poprow, "ShipMode"));
         linerow.setAttribute("Attribute3",
                              getPopulateValue(poprow, "Buyer"));
-        
-        
-        
-        /**  added on 9 may 2017 fy fatin  
-         * 
-         *   this code is for seting spo season from items seaon if spo season is null
-         * 
-         * */
-        String itemSeason;
-        try{
-            itemSeason =  getSeasonFromItem(getPopulateValue(poprow, "PoNumber"), OrgId);
-        }
-        catch(Exception e){
-            itemSeason=null;
-        }
-        
-        
-     //     System.out.println("=-=-=-=-=-=-= bug 1");
-        
-        String season = getPopulateValue(poprow, "Season");
-        
-            //    System.out.println("=-=-=-=-=-=-= bug 2");   
+                linerow.setAttribute("BuyerId",
+                                     getPopulateValue(poprow, "BuyerId"));
                 
-        if (season == null){
-            linerow.setAttribute("Attribute4",itemSeason );
-        }
-        else{
-            linerow.setAttribute("Attribute4",season );
-        }
-        
-           //     System.out.println("=-=-=-=-=-=-= bug 3");
-       
-       //  linerow.setAttribute("Attribute5", getPopulateValue(poprow, "StyleName"));
-       // linerow.setAttribute("Attribute6", getPopulateValue(poprow, "StyleNumber"));
-      //  linerow.setAttribute("Attribute7", getPopulateValue(poprow, "BpoNumber"));
+                  System.out.println("=-=-=-=-=-=-= populateBPOLines  Season"+getPopulateValue(poprow, "Season")); 
+                linerow.setAttribute("Attribute4",
+                                     getPopulateValue(poprow, "Season"));
+  
         linerow.setAttribute("Attribute8",
                              getPopulateValue(poprow, "Supplier"));
         linerow.setAttribute("Attribute9",getPopulateValue(poprow, "CurrencyCode"));
@@ -245,9 +217,9 @@ public class MainAMImpl extends ApplicationModuleImpl implements MainAM {
 
     public void populateDetails(String po, String orgID){
             
-     //   System.out.println("In Populate Item Details................" );
-      //  System.out.println(".................pio = "+po);
-      //  System.out.println(".................org = "+orgID);
+        System.out.println("In Populate Item Details................" );
+        System.out.println(".................po = "+po);
+        System.out.println(".................org = "+orgID);
             ViewObject vo = getItems1(); // map view read only
             vo.setWhereClause("PO_NUMBER ='"+po+"' and ORG_ID ="+orgID);
             vo.executeQuery();

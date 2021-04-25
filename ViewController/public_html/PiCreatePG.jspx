@@ -786,7 +786,7 @@
                       filterVisible="true" varStatus="vs"
                       selectionListener="#{bindings.FillBPO1.collectionModel.makeCurrent}"
                       rowSelection="multiple" id="t7"
-                      inlineStyle="width:820.0px; height:380px;"
+                      inlineStyle="width:1300.0px; height:380px;"
                       binding="#{ManagedBean.fillBpoPopYpTable}">
               <af:column sortProperty="CheckBoxBPO" filterable="true"
                          sortable="true" headerText="Select" id="c34"
@@ -953,7 +953,7 @@
               <af:column sortProperty="Supplier" filterable="true"
                          sortable="true" headerText="Supplier" id="c29"
                          align="center" filterFeatures="caseInsensitive"
-                         width="130">
+                         width="150">
                 <af:inputText value="#{row.bindings.Supplier.inputValue}"
                               label="#{bindings.FillBPO1.hints.Supplier.label}"
                               required="#{bindings.FillBPO1.hints.Supplier.mandatory}"
@@ -967,8 +967,15 @@
               <af:column headerText="Currency" id="c9" align="center"
                          sortable="true" filterable="true"
                          sortProperty="CurrencyCode"
-                         filterFeatures="caseInsensitive" width="60">
+                         filterFeatures="caseInsensitive" width="70">
                 <af:outputText value="#{row.CurrencyCode}" id="ot6"/>
+              </af:column>
+              <af:column headerText="#{bindings.FillBPO1.hints.BuyerId.label}"
+                         id="c45" visible="false">
+                <af:outputText value="#{row.BuyerId}" id="ot8">
+                  <af:convertNumber groupingUsed="false"
+                                    pattern="#{bindings.FillBPO1.hints.BuyerId.format}"/>
+                </af:outputText>
               </af:column>
             </af:table>
           </af:dialog>

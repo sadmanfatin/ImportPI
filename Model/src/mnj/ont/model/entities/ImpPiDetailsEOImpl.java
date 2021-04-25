@@ -432,6 +432,16 @@ public class ImpPiDetailsEOImpl extends EntityImpl {
             }
         }
         ,
+        BuyerId {
+            public Object get(ImpPiDetailsEOImpl obj) {
+                return obj.getBuyerId();
+            }
+
+            public void put(ImpPiDetailsEOImpl obj, Object value) {
+                obj.setBuyerId((Number)value);
+            }
+        }
+        ,
         ImpPiLines {
             public Object get(ImpPiDetailsEOImpl obj) {
                 return obj.getImpPiLines();
@@ -478,6 +488,8 @@ public class ImpPiDetailsEOImpl extends EntityImpl {
             return vals;
         }
     }
+
+
     public static final int IMPPIDETAILID = AttributesEnum.ImpPiDetailId.index();
     public static final int IMPPILINEID = AttributesEnum.ImpPiLineId.index();
     public static final int IMPPIHEADERID = AttributesEnum.ImpPiHeaderId.index();
@@ -519,6 +531,7 @@ public class ImpPiDetailsEOImpl extends EntityImpl {
     public static final int ATTRIBUTE28 = AttributesEnum.Attribute28.index();
     public static final int ATTRIBUTE29 = AttributesEnum.Attribute29.index();
     public static final int ATTRIBUTE30 = AttributesEnum.Attribute30.index();
+    public static final int BUYERID = AttributesEnum.BuyerId.index();
     public static final int IMPPILINES = AttributesEnum.ImpPiLines.index();
     public static final int IMPPIITEM = AttributesEnum.ImpPiItem.index();
 
@@ -526,6 +539,17 @@ public class ImpPiDetailsEOImpl extends EntityImpl {
      * This is the default constructor (do not remove).
      */
     public ImpPiDetailsEOImpl() {
+    }
+
+
+    /**
+     * @return the definition object for this instance class.
+     */
+    public static synchronized EntityDefImpl getDefinitionObject() {
+        if (mDefinitionObject == null) {
+            mDefinitionObject = EntityDefImpl.findDefObject("mnj.ont.model.entities.ImpPiDetailsEO");
+        }
+        return mDefinitionObject;
     }
 
     /**
@@ -1184,6 +1208,23 @@ public class ImpPiDetailsEOImpl extends EntityImpl {
         setAttributeInternal(ATTRIBUTE30, value);
     }
 
+
+    /**
+     * Gets the attribute value for BuyerId, using the alias name BuyerId.
+     * @return the BuyerId
+     */
+    public Number getBuyerId() {
+        return (Number)getAttributeInternal(BUYERID);
+    }
+
+    /**
+     * Sets <code>value</code> as the attribute value for BuyerId.
+     * @param value value to set the BuyerId
+     */
+    public void setBuyerId(Number value) {
+        setAttributeInternal(BUYERID, value);
+    }
+
     /**
      * getAttrInvokeAccessor: generated method. Do not modify.
      * @param index the index identifying the attribute
@@ -1238,6 +1279,7 @@ public class ImpPiDetailsEOImpl extends EntityImpl {
         return (RowIterator)getAttributeInternal(IMPPIITEM);
     }
 
+
     /**
      * @param impPiDetailId key constituent
 
@@ -1245,16 +1287,6 @@ public class ImpPiDetailsEOImpl extends EntityImpl {
      */
     public static Key createPrimaryKey(Number impPiDetailId) {
         return new Key(new Object[]{impPiDetailId});
-    }
-
-    /**
-     * @return the definition object for this instance class.
-     */
-    public static synchronized EntityDefImpl getDefinitionObject() {
-        if (mDefinitionObject == null) {
-            mDefinitionObject = EntityDefImpl.findDefObject("mnj.ont.model.entities.ImpPiDetailsEO");
-        }
-        return mDefinitionObject;
     }
 
     /**

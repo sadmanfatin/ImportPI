@@ -35,9 +35,9 @@ po_date,
 org_id,
 payment_terms,
 ship_mode,
+buyer_id,
 buyer,
 season,
-
 supplier,
 vendor_id,
 sum(nvl(po_value,0)) po_value
@@ -52,15 +52,14 @@ SELECT distinct PLA.PO_LINE_ID ,   PHA.SEGMENT1 PO_NUMBER, PHA.CURRENCY_CODE,
          PHA.ORG_ID, 
           SUM (ROUND((PLA.UNIT_PRICE * PDA.QUANTITY_ORDERED),2)) PO_VALUE,
          NVL(PHA.ATTRIBUTE5,'-') PAYMENT_TERMS, 
-         NVL(PHA.ATTRIBUTE6,'-') SHIP_MODE, 
-         (SELECT AC.CUSTOMER_NAME FROM AR_CUSTOMERS AC WHERE AC.CUSTOMER_ID = MRB.BUYER_ID) BUYER,
-         --NVL(MRB.SEASON_C,'-') SEASON, 
-        --(SELECT DISTINCT BOML.SEASON_C FROM CUST_MNJ_ONT_BOM BOML WHERE BOML.BOM_ID = MRB.BOM_ID AND ROWNUM = 1 ) SEASON,
-        ( select CASE 
-             WHEN PLLA.NOTE_TO_RECEIVER   like '%~%' THEN   TRIM(REGEXP_SUBSTR(PLLA.NOTE_TO_RECEIVER, '[^~]*$'))
-             ELSE (SELECT DISTINCT BOML.SEASON_C FROM CUST_MNJ_ONT_BOM BOML WHERE BOML.BOM_ID = MRB.BOM_ID AND ROWNUM = 1 ) 
-         END from PO_LINE_LOCATIONS_ALL PLLA where PLLA.PO_HEADER_ID=PLA.PO_HEADER_ID and PLLA.NOTE_TO_RECEIVER   like '%~%' and rownum =1
- and plla.CLOSED_CODE = 'OPEN'  ) SEASON,
+          NVL(PHA.ATTRIBUTE6,'-') SHIP_MODE, 
+        ( SELECT    H.BUYER_ID FROM XX_OM_POC_H_T H  WHERE H.POC_ID =   APPS.PO_LINE_POC_ID_F(PLA.PO_LINE_ID)) BUYER_ID,  
+       (  SELECT CUSTOMER_NAME FROM AR_CUSTOMERS AC WHERE AC.CUSTOMER_NAME_PHONETIC IN ('UM', 'EM') AND AC.STATUS = 'A'  AND  AC.CUSTOMER_ID = 
+         (SELECT H.BUYER_ID FROM XX_OM_POC_H_T H  WHERE H.POC_ID = APPS.PO_LINE_POC_ID_F(PLA.PO_LINE_ID))
+            AND ROWNUM = 1
+        ) BUYER ,
+        
+       ( SELECT    H.SEASON FROM XX_OM_POC_H_T H  WHERE H.POC_ID =   APPS.PO_LINE_POC_ID_F(PLA.PO_LINE_ID) AND ROWNUM = 1) SEASON,
          
             pla.VENDOR_PRODUCT_NUM  style_season    , 
         -- NVL(MRB.STYLE_NAME_C,'-') STYLE_NAME,
@@ -116,6 +115,7 @@ po_date,
 org_id,
 payment_terms,
 ship_mode,
+buyer_id,
 buyer,
 season,
 supplier,
@@ -208,6 +208,20 @@ vendor_id]]>
     SQLType="VARCHAR">
     <DesignTime>
       <Attr Name="_DisplaySize" Value="9"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="BuyerId"
+    IsUpdateable="false"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Type="oracle.jbo.domain.Number"
+    ColumnType="NUMBER"
+    AliasName="BUYER_ID"
+    Expression="BUYER_ID"
+    SQLType="NUMERIC">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="39"/>
     </DesignTime>
   </ViewAttribute>
   <ViewAttribute

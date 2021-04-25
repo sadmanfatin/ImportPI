@@ -7,3 +7,6 @@ ViewController/classes/.data/00000000/0000003e.jdb
 *.jpr
 *.ear
 *.war
+*.cdi_javac
+*.sso
+ViewController/deploy/ImportPI_ViewController_webapp1.war

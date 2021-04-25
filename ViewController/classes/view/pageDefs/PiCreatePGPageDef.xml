@@ -55,6 +55,7 @@
           <Item Value="Buyername"/>
           <Item Value="StyleSeason"/>
           <Item Value="CurrencyCode"/>
+          <Item Value="BuyerId"/>
         </AttrNames>
       </nodeDefinition>
     </tree>
