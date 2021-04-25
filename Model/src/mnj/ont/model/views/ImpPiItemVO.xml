@@ -116,21 +116,14 @@
             AND PHA.SEGMENT1=ImpPiDetailsEO.PO_NO
             AND PHA.ORG_ID=ImpPiLinesEO.ORG_ID
             AND PLA.ITEM_ID=ImpPiItemEO.ITEM_ID
-            AND ROWNUM=1) STYLE_NO,
-            (SELECT 
-       AC.customer_name buyer
-  FROM MNJ_MFG_PRECOSTING_H MnjMfgPrecostingH,ar_customers ac
-  WHERE MnjMfgPrecostingH.STYLE_NO =(SELECT TRIM(SUBSTR(PLA.VENDOR_PRODUCT_NUM,1,INSTR(PLA.VENDOR_PRODUCT_NUM,'~')-1))UM
-           FROM PO_LINES_ALL PLA,PO_HEADERS_ALL PHA
-            WHERE PLA.PO_HEADER_ID=PHA.PO_HEADER_ID
-            AND PHA.SEGMENT1=ImpPiDetailsEO.PO_NO
-            AND PHA.ORG_ID=ImpPiLinesEO.ORG_ID
-            AND PLA.ITEM_ID=ImpPiItemEO.ITEM_ID
-            AND ROWNUM=1)
-  AND ac.CUSTOMER_ID = MnjMfgPrecostingH.Buyer_Id
-  AND ROWNUM=1) Buyer,
-  ImpPiItemEO.POC_ID
- 
+            AND ROWNUM=1) STYLE_NO, 
+      (  select customer_name from ar_customers ac where AC.CUSTOMER_NAME_PHONETIC in ('UM', 'EM') and AC.STATUS = 'A'  AND  AC.CUSTOMER_ID = 
+         (SELECT H.BUYER_ID FROM XX_OM_POC_H_T H  WHERE H.POC_ID = ImpPiItemEO.POC_ID)            
+      ) BUYER ,
+  
+       ( SELECT H.SEASON FROM XX_OM_POC_H_T H  WHERE H.POC_ID = ImpPiItemEO.POC_ID  ) SEASON,     
+       ImpPiItemEO.POC_ID
+
 FROM IEDOC_IMP_PI_ITEM_DETAIL ImpPiItemEO, mtl_system_items msi,IEDOC_IMP_PI_DETAILS ImpPiDetailsEO,IEDOC_IMP_PI_LINES ImpPiLinesEO
    WHERE ImpPiItemEO.ITEM_ID=MSI.INVENTORY_ITEM_ID
    AND ImpPiDetailsEO.IMP_PI_DETAIL_ID=ImpPiItemEO.IMP_PI_DETAIL_ID
@@ -543,7 +536,6 @@ FROM IEDOC_IMP_PI_ITEM_DETAIL ImpPiItemEO, mtl_system_items msi,IEDOC_IMP_PI_DET
   </ViewAttribute>
   <ViewAttribute
     Name="Buyer"
-    IsUpdateable="false"
     IsPersistent="false"
     PrecisionRule="true"
     Precision="50"
@@ -554,6 +546,20 @@ FROM IEDOC_IMP_PI_ITEM_DETAIL ImpPiItemEO, mtl_system_items msi,IEDOC_IMP_PI_DET
     SQLType="VARCHAR">
     <DesignTime>
       <Attr Name="_DisplaySize" Value="50"/>
+    </DesignTime>
+  </ViewAttribute>
+  <ViewAttribute
+    Name="Season"
+    IsPersistent="false"
+    PrecisionRule="true"
+    Precision="30"
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    AliasName="SEASON"
+    Expression="SEASON"
+    SQLType="VARCHAR">
+    <DesignTime>
+      <Attr Name="_DisplaySize" Value="30"/>
     </DesignTime>
   </ViewAttribute>
   <ViewAttribute
