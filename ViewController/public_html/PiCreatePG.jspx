@@ -786,7 +786,7 @@
                       filterVisible="true" varStatus="vs"
                       selectionListener="#{bindings.FillBPO1.collectionModel.makeCurrent}"
                       rowSelection="multiple" id="t7"
-                      inlineStyle="width:1300.0px; height:380px;"
+                      inlineStyle="width:900.0px; height:380px;"
                       binding="#{ManagedBean.fillBpoPopYpTable}">
               <af:column sortProperty="CheckBoxBPO" filterable="true"
                          sortable="true" headerText="Select" id="c34"

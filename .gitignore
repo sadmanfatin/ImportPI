@@ -10,3 +10,6 @@ ViewController/classes/.data/00000000/0000003e.jdb
 *.cdi_javac
 *.sso
 ViewController/deploy/ImportPI_ViewController_webapp1.war
+*.ear
+*.jdb
+*.cdi_javac
