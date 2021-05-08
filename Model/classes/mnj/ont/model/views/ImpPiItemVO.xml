@@ -118,10 +118,10 @@
             AND PLA.ITEM_ID=ImpPiItemEO.ITEM_ID
             AND ROWNUM=1) STYLE_NO, 
       (  select customer_name from ar_customers ac where AC.CUSTOMER_NAME_PHONETIC in ('UM', 'EM') and AC.STATUS = 'A'  AND  AC.CUSTOMER_ID = 
-         (SELECT H.BUYER_ID FROM XX_OM_POC_H_T H  WHERE H.POC_ID = ImpPiItemEO.POC_ID)            
+         (SELECT H.BUYER_ID FROM XX_OM_POC_H_T H  WHERE to_char( H.POC_ID) = ImpPiItemEO.POC_ID)            
       ) BUYER ,
   
-       ( SELECT H.SEASON FROM XX_OM_POC_H_T H  WHERE H.POC_ID = ImpPiItemEO.POC_ID  ) SEASON,     
+       ( SELECT H.SEASON FROM XX_OM_POC_H_T H  WHERE to_Char( H.POC_ID) = ImpPiItemEO.POC_ID  ) SEASON,     
        ImpPiItemEO.POC_ID
 
 FROM IEDOC_IMP_PI_ITEM_DETAIL ImpPiItemEO, mtl_system_items msi,IEDOC_IMP_PI_DETAILS ImpPiDetailsEO,IEDOC_IMP_PI_LINES ImpPiLinesEO

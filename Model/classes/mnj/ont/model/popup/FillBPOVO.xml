@@ -64,7 +64,7 @@ SELECT DISTINCT PLA.PO_LINE_ID ,   PHA.SEGMENT1 PO_NUMBER, PHA.CURRENCY_CODE,
             
         APPS.PO_LINE_SEASON_F(PLA.PO_LINE_ID) SEASON,
                       
-        APPS.PO_LINE_STYLE_F(PLA.PO_LINE_ID) STYLE,
+      --  APPS.PO_LINE_STYLE_F(PLA.PO_LINE_ID) STYLE,
          
        PLA.VENDOR_PRODUCT_NUM  STYLE_SEASON    , 
 
@@ -94,7 +94,6 @@ SELECT DISTINCT PLA.PO_LINE_ID ,   PHA.SEGMENT1 PO_NUMBER, PHA.CURRENCY_CODE,
                                AND IIPL.ORG_ID = PHA.ORG_ID 
                                AND IIPL.ORG_ID=:P_ORG_ID
                                 )                   
- and pha.segment1= 42785
    GROUP BY PHA.SEGMENT1, 
          TRUNC (PHA.CREATION_DATE), 
          PHA.ORG_ID,

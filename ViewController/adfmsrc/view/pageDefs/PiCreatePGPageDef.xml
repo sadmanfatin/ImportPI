@@ -9,7 +9,7 @@
               id="ImpPiLines1Iterator"/>
     <iterator Binds="ImpPiHeaders1" RangeSize="25"
               DataControl="MainAMDataControl" id="ImpPiHeaders1Iterator"/>
-    <iterator Binds="FillBPO1" RangeSize="200" DataControl="MainAMDataControl"
+    <iterator Binds="FillBPO1" RangeSize="25" DataControl="MainAMDataControl"
               id="FillBPO1Iterator"/>
     <searchRegion Binds="FillBPO1Iterator" Criteria=""
                   Customizer="oracle.jbo.uicli.binding.JUSearchBindingCustomizer"
