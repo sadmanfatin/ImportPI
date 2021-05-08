@@ -618,9 +618,10 @@
     Name="PocId"
     ColumnName="POC_ID"
     SQLType="NUMERIC"
-    Type="oracle.jbo.domain.Number"
-    ColumnType="NUMBER"
-    TableName="IEDOC_IMP_PI_ITEM_DETAIL">
+    Type="java.lang.String"
+    ColumnType="VARCHAR2"
+    TableName="IEDOC_IMP_PI_ITEM_DETAIL"
+    Precision="255">
     <DesignTime>
       <Attr Name="_DisplaySize" Value="39"/>
     </DesignTime>

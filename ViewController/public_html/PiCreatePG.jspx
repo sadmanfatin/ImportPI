@@ -642,9 +642,10 @@
                     <f:validator binding="#{row.bindings.Attribute12.validator}"/>
                   </af:inputText>
                 </af:column>
-                <af:column headerText="Garments Quantity" id="c11" align="left"
+                <af:column headerText="Garments Quantity" id="c11"
+                           align="center"
                            sortable="true" filterable="true"
-                           sortProperty="Attribute6">
+                           sortProperty="Attribute6" width="70">
                   <af:inputText value="#{row.bindings.Attribute6.inputValue}"
                                 label="#{bindings.ImpPiItem1.hints.Attribute6.label}"
                                 required="#{bindings.ImpPiItem1.hints.Attribute6.mandatory}"
@@ -658,9 +659,9 @@
                                       pattern="#{bindings.ImpPiItem1.hints.Attribute6.format}"/>
                   </af:inputText>
                 </af:column>
-                <af:column headerText="#{bindings.ImpPiItem1.hints.PocId.label}"
+                <af:column headerText="Poc Id"
                            id="c43" align="center" sortable="true"
-                           filterable="true" width="70" sortProperty="PocId">
+                           filterable="true" width="80" sortProperty="PocId">
                   <af:inputText value="#{row.bindings.PocId.inputValue}"
                                 label="#{bindings.ImpPiItem1.hints.PocId.label}"
                                 required="#{bindings.ImpPiItem1.hints.PocId.mandatory}"
@@ -669,8 +670,6 @@
                                 shortDesc="#{bindings.ImpPiItem1.hints.PocId.tooltip}"
                                 id="it41" readOnly="true">
                     <f:validator binding="#{row.bindings.PocId.validator}"/>
-                    <af:convertNumber groupingUsed="false"
-                                      pattern="#{bindings.ImpPiItem1.hints.PocId.format}"/>
                   </af:inputText>
                 </af:column>
               </af:table>

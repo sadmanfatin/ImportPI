@@ -538,7 +538,7 @@ public class ImpPiItemEOImpl extends EntityImpl {
             }
 
             public void put(ImpPiItemEOImpl obj, Object value) {
-                obj.setPocId((Number)value);
+                obj.setPocId((String)value);
             }
         }
         ,
@@ -1482,15 +1482,15 @@ public class ImpPiItemEOImpl extends EntityImpl {
      * Gets the attribute value for PocId, using the alias name PocId.
      * @return the PocId
      */
-    public Number getPocId() {
-        return (Number)getAttributeInternal(POCID);
+    public String getPocId() {
+        return (String)getAttributeInternal(POCID);
     }
 
     /**
      * Sets <code>value</code> as the attribute value for PocId.
      * @param value value to set the PocId
      */
-    public void setPocId(Number value) {
+    public void setPocId(String value) {
         setAttributeInternal(POCID, value);
     }
 

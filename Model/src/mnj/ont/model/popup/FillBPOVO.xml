@@ -28,43 +28,46 @@
     <TransientExpression><![CDATA[adf.context.sessionScope.OrgID]]></TransientExpression>
   </Variable>
   <SQLQuery>
-    <![CDATA[select 
-po_number,
-currency_code,
-po_date,
-org_id,
-payment_terms,
-ship_mode,
-buyer_id,
-buyer,
-season,
-supplier,
-vendor_id,
-sum(nvl(po_value,0)) po_value
+    <![CDATA[SELECT 
+PO_NUMBER,
+CURRENCY_CODE,
+PO_DATE,
+ORG_ID,
+PAYMENT_TERMS,
+SHIP_MODE,
+BUYER_ID,
+(  SELECT CUSTOMER_NAME FROM AR_CUSTOMERS AC WHERE AC.CUSTOMER_NAME_PHONETIC IN ('UM', 'EM') AND AC.STATUS = 'A'  AND  AC.CUSTOMER_ID = 
+ BUYER_ID) BUYER ,
+SEASON,
+SUPPLIER,
+VENDOR_ID,
+SUM(NVL(PO_VALUE,0)) PO_VALUE
 
-from
+FROM
 (
 
 
 
-SELECT distinct PLA.PO_LINE_ID ,   PHA.SEGMENT1 PO_NUMBER, PHA.CURRENCY_CODE,
-         TRUNC (PHA.CREATION_DATE) PO_DATE,
-         PHA.ORG_ID, 
+SELECT DISTINCT PLA.PO_LINE_ID ,   PHA.SEGMENT1 PO_NUMBER, PHA.CURRENCY_CODE,
+       TRUNC (PHA.CREATION_DATE) PO_DATE,
+        PHA.ORG_ID, 
           SUM (ROUND((PLA.UNIT_PRICE * PDA.QUANTITY_ORDERED),2)) PO_VALUE,
          NVL(PHA.ATTRIBUTE5,'-') PAYMENT_TERMS, 
           NVL(PHA.ATTRIBUTE6,'-') SHIP_MODE, 
-        ( SELECT    H.BUYER_ID FROM XX_OM_POC_H_T H  WHERE H.POC_ID =   APPS.PO_LINE_POC_ID_F(PLA.PO_LINE_ID)) BUYER_ID,  
-       (  SELECT CUSTOMER_NAME FROM AR_CUSTOMERS AC WHERE AC.CUSTOMER_NAME_PHONETIC IN ('UM', 'EM') AND AC.STATUS = 'A'  AND  AC.CUSTOMER_ID = 
-         (SELECT H.BUYER_ID FROM XX_OM_POC_H_T H  WHERE H.POC_ID = APPS.PO_LINE_POC_ID_F(PLA.PO_LINE_ID))
-            AND ROWNUM = 1
-        ) BUYER ,
-        
-       ( SELECT    H.SEASON FROM XX_OM_POC_H_T H  WHERE H.POC_ID =   APPS.PO_LINE_POC_ID_F(PLA.PO_LINE_ID) AND ROWNUM = 1) SEASON,
+                 
+--        CASE WHEN  APPS.PO_LINE_POC_ID_F(PLA.PO_LINE_ID) = 'Sample ~ All'  
+--             THEN     APPS.POC_ID_FOR_STYLE_SEASON_F( APPS.PO_LINE_SEASON_F(PLA.PO_LINE_ID), APPS.PO_LINE_STYLE_F(PLA.PO_LINE_ID) )
+--             ELSE  ( SELECT   H.BUYER_ID FROM XX_OM_POC_H_T H  WHERE TO_CHAR(POC_ID) =  APPS.PO_LINE_POC_ID_F(PLA.PO_LINE_ID)) END
+--        BUYER_ID ,
+
+           (SELECT   H.BUYER_ID FROM XX_OM_POC_H_T H  WHERE TO_CHAR(POC_ID) =  APPS.PO_LINE_POC_ID_F(PLA.PO_LINE_ID)) BUYER_ID ,
+            
+        APPS.PO_LINE_SEASON_F(PLA.PO_LINE_ID) SEASON,
+                      
+        APPS.PO_LINE_STYLE_F(PLA.PO_LINE_ID) STYLE,
          
-            pla.VENDOR_PRODUCT_NUM  style_season    , 
-        -- NVL(MRB.STYLE_NAME_C,'-') STYLE_NAME,
-        -- (SELECT DISTINCT BOML.STYLE_NO_C FROM CUST_MNJ_ONT_BOM BOML WHERE BOML.BOM_ID = MRB.BOM_ID AND ROWNUM = 1 ) STYLE_NUMBER, 
-      -- substr(LISTAGG(MRB.ATTRIBUTE14, ',') WITHIN GROUP (ORDER BY MRB.ATTRIBUTE14 ),0,250) BPO_NUMBER,
+       PLA.VENDOR_PRODUCT_NUM  STYLE_SEASON    , 
+
         (SELECT PV.VENDOR_NAME FROM PO_VENDORS PV WHERE PV.VENDOR_ID = PHA.VENDOR_ID) SUPPLIER,
          PHA.VENDOR_ID
     FROM 
@@ -81,7 +84,7 @@ SELECT distinct PLA.PO_LINE_ID ,   PHA.SEGMENT1 PO_NUMBER, PHA.CURRENCY_CODE,
      AND PHA.TYPE_LOOKUP_CODE = 'STANDARD'
      --mt
      AND PDA.REQ_DISTRIBUTION_ID = MRB.DISTRIBUTION_ID(+)
-    AND pha.ORG_ID=:P_ORG_ID
+    AND PHA.ORG_ID=:P_ORG_ID
     AND PDA.GL_CANCELLED_DATE IS NULL
     AND PLA.CANCEL_FLAG='N' 
     AND PHA.APPROVED_FLAG = 'Y' --added on 17.08.18
@@ -90,9 +93,7 @@ SELECT distinct PLA.PO_LINE_ID ,   PHA.SEGMENT1 PO_NUMBER, PHA.CURRENCY_CODE,
                                AND IIPD.PO_NO = PHA.SEGMENT1 
                                AND IIPL.ORG_ID = PHA.ORG_ID 
                                AND IIPL.ORG_ID=:P_ORG_ID
-                                ) 
-                                 
- 
+                                )                   
    GROUP BY PHA.SEGMENT1, 
          TRUNC (PHA.CREATION_DATE), 
          PHA.ORG_ID,
@@ -107,19 +108,18 @@ SELECT distinct PLA.PO_LINE_ID ,   PHA.SEGMENT1 PO_NUMBER, PHA.CURRENCY_CODE,
          PHA.CURRENCY_CODE,
          PLA.PO_HEADER_ID ,
          PLA.PO_LINE_ID ,
-         pla.VENDOR_PRODUCT_NUM  )
+         PLA.VENDOR_PRODUCT_NUM  )
          
-group by po_number,
-currency_code,
-po_date,
-org_id,
-payment_terms,
-ship_mode,
-buyer_id,
-buyer,
-season,
-supplier,
-vendor_id]]>
+GROUP BY PO_NUMBER,
+CURRENCY_CODE,
+PO_DATE,
+ORG_ID,
+PAYMENT_TERMS,
+SHIP_MODE,
+BUYER_ID,
+SEASON,
+SUPPLIER,
+VENDOR_ID]]>
   </SQLQuery>
   <ViewAttribute
     Name="PoNumber"
