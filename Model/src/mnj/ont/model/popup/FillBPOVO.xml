@@ -10,7 +10,8 @@
   CustomQuery="true"
   ComponentClass="mnj.ont.model.popup.FillBPOVOImpl"
   PageIterMode="Full"
-  UseGlueCode="false">
+  UseGlueCode="false"
+  FetchMode="FETCH_AS_NEEDED">
   <DesignTime>
     <Attr Name="_codeGenFlag2" Value="Access|Coll|Prog|VarAccess"/>
     <Attr Name="_isExpertMode" Value="true"/>
@@ -60,7 +61,9 @@ SELECT DISTINCT PLA.PO_LINE_ID ,   PHA.SEGMENT1 PO_NUMBER, PHA.CURRENCY_CODE,
 --             ELSE  ( SELECT   H.BUYER_ID FROM XX_OM_POC_H_T H  WHERE TO_CHAR(POC_ID) =  APPS.PO_LINE_POC_ID_F(PLA.PO_LINE_ID)) END
 --        BUYER_ID ,
 
-           (SELECT   H.BUYER_ID FROM XX_OM_POC_H_T H  WHERE TO_CHAR(POC_ID) =  APPS.PO_LINE_POC_ID_F(PLA.PO_LINE_ID)) BUYER_ID ,
+          (SELECT   H.BUYER_ID FROM XX_OM_POC_H_T H  
+           WHERE POC_ID =   nullif( APPS.PO_LINE_POC_ID_F(PLA.PO_LINE_ID) , 'Sample ~ All')
+           ) BUYER_ID ,
             
         APPS.PO_LINE_SEASON_F(PLA.PO_LINE_ID) SEASON,
                       
@@ -73,17 +76,15 @@ SELECT DISTINCT PLA.PO_LINE_ID ,   PHA.SEGMENT1 PO_NUMBER, PHA.CURRENCY_CODE,
     FROM 
          PO_HEADERS_ALL PHA, 
          PO_LINES_ALL PLA,
-         PO_DISTRIBUTIONS_ALL PDA,
+         PO_DISTRIBUTIONS_ALL PDA
          
-         MNJ_REQUISITION_BOM_V MRB
    WHERE 
          PHA.PO_HEADER_ID = PLA.PO_HEADER_ID
      AND PDA.PO_HEADER_ID = PHA.PO_HEADER_ID
      AND PDA.PO_LINE_ID   = PLA.PO_LINE_ID
      
      AND PHA.TYPE_LOOKUP_CODE = 'STANDARD'
-     --mt
-     AND PDA.REQ_DISTRIBUTION_ID = MRB.DISTRIBUTION_ID(+)
+
     AND PHA.ORG_ID=:P_ORG_ID
     AND PDA.GL_CANCELLED_DATE IS NULL
     AND PLA.CANCEL_FLAG='N' 
@@ -93,23 +94,21 @@ SELECT DISTINCT PLA.PO_LINE_ID ,   PHA.SEGMENT1 PO_NUMBER, PHA.CURRENCY_CODE,
                                AND IIPD.PO_NO = PHA.SEGMENT1 
                                AND IIPL.ORG_ID = PHA.ORG_ID 
                                AND IIPL.ORG_ID=:P_ORG_ID
-                                )                   
+                                )                    
    GROUP BY PHA.SEGMENT1, 
          TRUNC (PHA.CREATION_DATE), 
          PHA.ORG_ID,
          PHA.VENDOR_ID,
-         MRB.BUYER_ID,
-         MRB.SEASON_C,
+
         -- MRB.STYLE_NAME_C,
         -- MRB.STYLE_NO_C,
          PHA.ATTRIBUTE6 ,
          PHA.ATTRIBUTE5,
-         MRB.BOM_ID,
          PHA.CURRENCY_CODE,
          PLA.PO_HEADER_ID ,
          PLA.PO_LINE_ID ,
          PLA.VENDOR_PRODUCT_NUM  )
-         
+      
 GROUP BY PO_NUMBER,
 CURRENCY_CODE,
 PO_DATE,
